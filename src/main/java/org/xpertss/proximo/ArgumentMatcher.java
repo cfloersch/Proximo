@@ -6,10 +6,9 @@
  */
 package org.xpertss.proximo;
 
-import org.hamcrest.BaseMatcher;
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
+import xpertss.proximo.Matcher;
 import xpertss.proximo.Matchers;
+
 
 /**
  * Allows creating customized argument matchers.
@@ -40,7 +39,7 @@ import xpertss.proximo.Matchers;
  *
  * @param <T> type of argument
  */
-public abstract class ArgumentMatcher<T> extends BaseMatcher<T> {
+public abstract class ArgumentMatcher<T> implements Matcher<T> {
 
    private static final long serialVersionUID = -2145234737829370369L;
 
@@ -56,15 +55,4 @@ public abstract class ArgumentMatcher<T> extends BaseMatcher<T> {
     */
    public abstract boolean matches(Object argument);
 
-   /**
-    * You might want to override this method to provide more specific description of the
-    * matcher (useful when verification failures are reported).
-    *
-    * @param description the description to which the matcher description is
-    * appended.
-    */
-   public void describeTo(Description description) {
-      String className = getClass().getSimpleName();
-      description.appendText(className);
-   }
 }

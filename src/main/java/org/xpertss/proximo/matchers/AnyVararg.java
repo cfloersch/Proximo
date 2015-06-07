@@ -8,8 +8,8 @@ package org.xpertss.proximo.matchers;
 
 import java.io.Serializable;
 
-import org.hamcrest.Matcher;
 import org.xpertss.proximo.ArgumentMatcher;
+import xpertss.proximo.Matcher;
 
 @SuppressWarnings("unchecked")
 public class AnyVararg extends ArgumentMatcher implements VarargMatcher, Serializable {

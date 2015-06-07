@@ -20,12 +20,14 @@ public interface Invocation {
     */
    Object getProxy();
 
+
    /**
     * returns the proxied object
     *
     * @return proxied object
     */
    Object getProxied();
+
 
    /**
     * returns the method
@@ -46,13 +48,19 @@ public interface Invocation {
 
 
    /**
-    * calls real method
-    * <p/>
-    * <b>Warning:</b> depending on the real implementation it might throw exceptions
+    * returns arguments passed to the method
+    *
+    * @return arguments
+    */
+   Object[] getArguments();
+
+
+   /**
+    * Forwards the call to the proxied object
     *
     * @return whatever the real method returns / throws
     * @throws Throwable in case real method throws
     */
-   Object callRealMethod() throws Throwable;
+   Object forwardCall() throws Throwable;
 
 }

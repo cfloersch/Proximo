@@ -6,7 +6,6 @@
  */
 package xpertss.proximo;
 
-import org.hamcrest.Matcher;
 import org.xpertss.proximo.ArgumentMatcher;
 import org.xpertss.proximo.StubbingProgress;
 import org.xpertss.proximo.matchers.Any;
@@ -22,9 +21,13 @@ import org.xpertss.proximo.matchers.Same;
 import org.xpertss.proximo.matchers.StartsWith;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import static org.xpertss.proximo.util.Primitives.defaultValueForPrimitiveOrWrapper;
+import static org.xpertss.proximo.util.Primitives.isPrimitiveOrWrapper;
 
 /**
  * TODO Create some docs which indicate that these are intended to allow the proxy to
@@ -35,7 +38,7 @@ import java.util.Set;
 @SuppressWarnings("unchecked")
 public class Matchers {
 
-   private static final StubbingProgress MOCKING_PROGRESS = null;
+   static final StubbingProgress PROGRESS = new StubbingProgress();
 
    /**
     * Any <code>boolean</code> or non-null <code>Boolean</code>
@@ -70,7 +73,7 @@ public class Matchers {
     */
    public static char anyChar() {
       reportMatcher(new InstanceOf(Character.class));
-      return (char) 0; // TODO What is the default char? 0?
+      return '\u0000';
    }
 
    /**
@@ -184,8 +187,7 @@ public class Matchers {
     */
    public static <T> T any(Class<T> clazz) {
       reportMatcher(Any.ANY);
-      //return (T) .returnFor(clazz);  // TODO
-      return null;
+      return returnFor(clazz);
    }
 
    /**
@@ -212,7 +214,6 @@ public class Matchers {
     */
    public static String anyString() {
       reportMatcher(new InstanceOf(String.class));
-      //return .returnString(); // TODO What string?
       return "";
    }
 
@@ -225,7 +226,7 @@ public class Matchers {
     */
    public static List anyList() {
       reportMatcher(new InstanceOf(List.class));
-      return null;   // TODO What list?
+      return Collections.emptyList();
    }
 
    /**
@@ -256,7 +257,7 @@ public class Matchers {
     */
    public static Set anySet() {
       reportMatcher(new InstanceOf(Set.class));
-      return null; // TODO What set?
+      return Collections.emptySet();
    }
 
    /**
@@ -287,7 +288,7 @@ public class Matchers {
     */
    public static Map anyMap() {
       reportMatcher(new InstanceOf(Map.class));
-      return null; // TODO what map?
+      return Collections.emptyMap();
    }
 
    /**
@@ -319,7 +320,7 @@ public class Matchers {
     */
    public static Collection anyCollection() {
       reportMatcher(new InstanceOf(Collection.class));
-      return null; // TODO What list
+      return Collections.emptyList();
    }
 
    /**
@@ -354,7 +355,7 @@ public class Matchers {
     */
    public static <T> T isA(Class<T> clazz) {
       reportMatcher(new InstanceOf(clazz));
-      return (T) null; // TODO What class <T>returnFor(clazz)
+      return returnFor(clazz);
    }
 
    /**
@@ -396,7 +397,7 @@ public class Matchers {
     */
    public static char eq(char value) {
       reportMatcher(new Equals(value));
-      return (char) 0;  // TODO Validate this is the char we return
+      return '\u0000';
    }
 
    /**
@@ -480,7 +481,7 @@ public class Matchers {
     */
    public static <T> T eq(T value) {
       reportMatcher(new Equals(value));
-      return (T) null;  // TODO <T>returnFor(value)
+      return returnFor(value);
    }
 
 
@@ -497,7 +498,7 @@ public class Matchers {
     */
    public static <T> T same(T value) {
       reportMatcher(new Same(value));
-      return (T) null;  // TODO <T>returnFor(value)
+      return returnFor(value);
    }
 
    /**
@@ -595,7 +596,7 @@ public class Matchers {
     */
    public static String contains(String substring) {
       reportMatcher(new Contains(substring));
-      return "";  // TODO What does returnString() return
+      return "";
    }
 
    /**
@@ -609,7 +610,7 @@ public class Matchers {
     */
    public static String matches(String regex) {
       reportMatcher(new Matches(regex));
-      return "";  // TODO What does returnString() return
+      return "";
    }
 
    /**
@@ -623,7 +624,7 @@ public class Matchers {
     */
    public static String endsWith(String suffix) {
       reportMatcher(new EndsWith(suffix));
-      return "";  // TODO What does returnString() return
+      return "";
    }
 
    /**
@@ -637,7 +638,7 @@ public class Matchers {
     */
    public static String startsWith(String prefix) {
       reportMatcher(new StartsWith(prefix));
-      return "";  // TODO What does returnString() return
+      return "";
    }
 
    /**
@@ -666,7 +667,7 @@ public class Matchers {
     */
    public static char charThat(Matcher<Character> matcher) {
       reportMatcher(matcher);
-      return (char) 0;  // TODO Is this the correct char?
+      return '\u0000';
    }
 
    /**
@@ -761,8 +762,25 @@ public class Matchers {
    }
 
 
+
+
+   private static <T> T returnFor(Class<T> clazz)
+   {
+      if (isPrimitiveOrWrapper(clazz)) {
+         return defaultValueForPrimitiveOrWrapper(clazz);
+      }
+      return null;
+   }
+
+   private static <T> T returnFor(T instance)
+   {
+      return instance == null ? null : (T) returnFor(instance.getClass());
+   }
+
+
+
    private static void reportMatcher(Matcher<?> matcher) {
-      // TODO call into the current StubbingProgress passing the given matcher
+      PROGRESS.reportMatcher(matcher);
    }
 
 }

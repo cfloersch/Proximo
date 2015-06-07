@@ -1,0 +1,4 @@
+Eliminate hamcrest dependency
+- I don't need all the functionality necessary for unit test frameworks
+  like the ability to describe the issue (SelfDescribing)
+

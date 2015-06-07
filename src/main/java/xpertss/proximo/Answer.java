@@ -7,10 +7,12 @@
 package xpertss.proximo;
 
 /**
- * Generic interface to be used for configuring mock's answer.
- * Answer specifies an action that is executed and a return value that is returned when you interact with the mock.
+ * Generic interface to be used for configuring a proxy's answer.
+ * <p/>
+ * Answer specifies an action that is executed and a return value that is
+ * returned when you interact with the proxy.
  * <p>
- * Example of stubbing a mock with custom answer:
+ * Example of stubbing a proxy with custom answer:
  *
  * <pre class="code"><code class="java">
  * doAnswer(new Answer() {
@@ -33,7 +35,7 @@ package xpertss.proximo;
 public interface Answer<T> {
 
    /**
-    * @param invocation the invocation on the mock.
+    * @param invocation the invocation on the proxy.
     * @return the value to be returned
     * @throws Throwable the throwable to be thrown
     */
