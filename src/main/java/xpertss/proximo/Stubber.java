@@ -35,7 +35,7 @@ package xpertss.proximo;
  * <p>
  * {@link Proximo#doReturn(Object)}
  * <p>
- * {@link Proximo#doProxyCall()}
+ * {@link Proximo#doForwardCall()}
  * <p>
  *
  * See examples in javadoc for {@link Proximo}
@@ -116,7 +116,11 @@ public interface Stubber {
 
    /**
     * Use it for stubbing consecutive calls.
-    * <p>
+    * <pre class="code"><code class="java">
+    *   doThrow(new RuntimeException("one")).
+    *   doReturn(100)
+    *   .when(proxy).someMethod();
+    * </code></pre>
     * See javadoc for {@link Proximo#doReturn(Object)}
     *
     * @param toBeReturned to be returned when the stubbed method is called
@@ -126,11 +130,13 @@ public interface Stubber {
 
    /**
     * Use it for stubbing consecutive calls.
-    * <p>
-    * See javadoc for {@link Proximo#doProxyCall()}
+    * <p/>
+    * Forward call to proxied instance.
+    * <p/>
+    * See javadoc for {@link Proximo#doForwardCall()}
     *
     * @return stubber - to select a method for stubbing
     */
-   Stubber doProxyCall();
+   Stubber doForwardCall();
 
 }

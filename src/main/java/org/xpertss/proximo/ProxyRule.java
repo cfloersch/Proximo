@@ -7,37 +7,36 @@
 package org.xpertss.proximo;
 
 
+import org.xpertss.proximo.util.Utils;
 import xpertss.proximo.Answer;
+import xpertss.proximo.Invocation;
 import xpertss.proximo.Matcher;
 
-public class ProxyRule<T> {
+import java.util.Queue;
 
+public class ProxyRule {
+
+   private final Queue<Answer<?>> answers;
    private final Matcher[] matchers;
-   private final Answer<T> handler;
 
-   private ProxyRule(Matcher[] matchers, Answer<T> handler)
+   ProxyRule(Matcher[] matchers, Queue<Answer<?>> answers)
    {
-      this.matchers = matchers;
-      this.handler = handler;
+      this.matchers = Utils.notNull(matchers, "matchers");
+      this.answers = Utils.notNull(answers, "answers");
    }
 
-   public boolean matches(Object[] args)
+   public boolean matches(Invocation invocation)
    {
-      // TODO Needs to be much more sophisticated
-      // https://github.com/mockito/mockito/blob/master/src/org/mockito/internal/invocation/ArgumentsComparator.java
-
-      if(args.length == matchers.length) {
-         for(int i = 0; i < args.length; i++) {
-            if(!matchers[i].matches(args[i])) return false;
-         }
-         return true;
+      Object[] args = invocation.getArguments();
+      for(int i = 0; i < matchers.length; i++) {
+         if(!matchers[i].matches(args[i])) return false;
       }
-      return false;
+      return true;
    }
 
-   public Answer<T> getAnswer()
+   public Answer<?> getAnswer()
    {
-      return handler;
+      return (answers.size() > 1) ? answers.poll() : answers.peek();
    }
 
 }

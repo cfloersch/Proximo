@@ -19,15 +19,13 @@ import org.xpertss.proximo.matchers.NotNull;
 import org.xpertss.proximo.matchers.Null;
 import org.xpertss.proximo.matchers.Same;
 import org.xpertss.proximo.matchers.StartsWith;
+import org.xpertss.proximo.util.Defaults;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static org.xpertss.proximo.util.Primitives.defaultValueForPrimitiveOrWrapper;
-import static org.xpertss.proximo.util.Primitives.isPrimitiveOrWrapper;
 
 /**
  * TODO Create some docs which indicate that these are intended to allow the proxy to
@@ -49,7 +47,7 @@ public class Matchers {
     */
    public static boolean anyBoolean() {
       reportMatcher(new InstanceOf(Boolean.class));
-      return false;
+      return Defaults.returnFor(boolean.class);
    }
 
    /**
@@ -61,7 +59,7 @@ public class Matchers {
     */
    public static byte anyByte() {
       reportMatcher(new InstanceOf(Byte.class));
-      return (byte) 0;
+      return Defaults.returnFor(byte.class);
    }
 
    /**
@@ -73,7 +71,7 @@ public class Matchers {
     */
    public static char anyChar() {
       reportMatcher(new InstanceOf(Character.class));
-      return '\u0000';
+      return Defaults.returnFor(char.class);
    }
 
    /**
@@ -85,7 +83,7 @@ public class Matchers {
     */
    public static int anyInt() {
       reportMatcher(new InstanceOf(Integer.class));
-      return 0;
+      return Defaults.returnFor(int.class);
    }
 
    /**
@@ -97,7 +95,7 @@ public class Matchers {
     */
    public static long anyLong() {
       reportMatcher(new InstanceOf(Long.class));
-      return 0L;
+      return Defaults.returnFor(long.class);
    }
 
    /**
@@ -109,7 +107,7 @@ public class Matchers {
     */
    public static float anyFloat() {
       reportMatcher(new InstanceOf(Float.class));
-      return 0F;
+      return Defaults.returnFor(float.class);
    }
 
    /**
@@ -121,7 +119,7 @@ public class Matchers {
     */
    public static double anyDouble() {
       reportMatcher(new InstanceOf(Double.class));
-      return 0D;
+      return Defaults.returnFor(double.class);
    }
 
    /**
@@ -133,7 +131,7 @@ public class Matchers {
     */
    public static short anyShort() {
       reportMatcher(new InstanceOf(Short.class));
-      return (short) 0;
+      return Defaults.returnFor(short.class);
    }
 
    /**
@@ -147,7 +145,7 @@ public class Matchers {
     */
    public static <T> T anyObject() {
       reportMatcher(Any.ANY);
-      return (T) null;
+      return Defaults.returnNull();
    }
 
    /**
@@ -169,7 +167,7 @@ public class Matchers {
     */
    public static <T> T anyVararg() {
       reportMatcher(AnyVararg.ANY_VARARG);
-      return (T) null;
+      return Defaults.returnNull();
    }
 
    /**
@@ -187,7 +185,7 @@ public class Matchers {
     */
    public static <T> T any(Class<T> clazz) {
       reportMatcher(Any.ANY);
-      return returnFor(clazz);
+      return Defaults.returnFor(clazz);
    }
 
    /**
@@ -214,7 +212,7 @@ public class Matchers {
     */
    public static String anyString() {
       reportMatcher(new InstanceOf(String.class));
-      return "";
+      return Defaults.returnString();
    }
 
    /**
@@ -226,7 +224,7 @@ public class Matchers {
     */
    public static List anyList() {
       reportMatcher(new InstanceOf(List.class));
-      return Collections.emptyList();
+      return Defaults.returnList();
    }
 
    /**
@@ -257,7 +255,7 @@ public class Matchers {
     */
    public static Set anySet() {
       reportMatcher(new InstanceOf(Set.class));
-      return Collections.emptySet();
+      return Defaults.returnSet();
    }
 
    /**
@@ -288,7 +286,7 @@ public class Matchers {
     */
    public static Map anyMap() {
       reportMatcher(new InstanceOf(Map.class));
-      return Collections.emptyMap();
+      return Defaults.returnMap();
    }
 
    /**
@@ -320,7 +318,7 @@ public class Matchers {
     */
    public static Collection anyCollection() {
       reportMatcher(new InstanceOf(Collection.class));
-      return Collections.emptyList();
+      return Defaults.returnList();
    }
 
    /**
@@ -355,7 +353,7 @@ public class Matchers {
     */
    public static <T> T isA(Class<T> clazz) {
       reportMatcher(new InstanceOf(clazz));
-      return returnFor(clazz);
+      return Defaults.returnFor(clazz);
    }
 
    /**
@@ -369,7 +367,7 @@ public class Matchers {
     */
    public static boolean eq(boolean value) {
       reportMatcher(new Equals(value));
-      return false;
+      return Defaults.returnFor(boolean.class);
    }
 
    /**
@@ -383,7 +381,7 @@ public class Matchers {
     */
    public static byte eq(byte value) {
       reportMatcher(new Equals(value));
-      return (byte) 0;
+      return Defaults.returnFor(byte.class);
    }
 
    /**
@@ -397,7 +395,7 @@ public class Matchers {
     */
    public static char eq(char value) {
       reportMatcher(new Equals(value));
-      return '\u0000';
+      return Defaults.returnFor(char.class);
    }
 
    /**
@@ -411,7 +409,7 @@ public class Matchers {
     */
    public static double eq(double value) {
       reportMatcher(new Equals(value));
-      return 0D;
+      return Defaults.returnFor(double.class);
    }
 
    /**
@@ -425,7 +423,7 @@ public class Matchers {
     */
    public static float eq(float value) {
       reportMatcher(new Equals(value));
-      return 0F;
+      return Defaults.returnFor(float.class);
    }
 
    /**
@@ -439,7 +437,7 @@ public class Matchers {
     */
    public static int eq(int value) {
       reportMatcher(new Equals(value));
-      return 0;
+      return Defaults.returnFor(int.class);
    }
 
    /**
@@ -453,7 +451,7 @@ public class Matchers {
     */
    public static long eq(long value) {
       reportMatcher(new Equals(value));
-      return 0L;
+      return Defaults.returnFor(long.class);
    }
 
    /**
@@ -467,7 +465,7 @@ public class Matchers {
     */
    public static short eq(short value) {
       reportMatcher(new Equals(value));
-      return (short) 0;
+      return Defaults.returnFor(short.class);
    }
 
    /**
@@ -481,7 +479,7 @@ public class Matchers {
     */
    public static <T> T eq(T value) {
       reportMatcher(new Equals(value));
-      return returnFor(value);
+      return Defaults.returnFor(value);
    }
 
 
@@ -498,7 +496,7 @@ public class Matchers {
     */
    public static <T> T same(T value) {
       reportMatcher(new Same(value));
-      return returnFor(value);
+      return Defaults.returnFor(value);
    }
 
    /**
@@ -510,7 +508,7 @@ public class Matchers {
     */
    public static Object isNull() {
       reportMatcher(Null.NULL);
-      return null;
+      return Defaults.returnNull();
    }
 
    /**
@@ -524,7 +522,7 @@ public class Matchers {
     */
    public static <T> T isNull(Class<T> clazz) {
       reportMatcher(Null.NULL);
-      return (T) null;
+      return Defaults.returnNull();
    }
 
    /**
@@ -538,7 +536,7 @@ public class Matchers {
     */
    public static Object notNull() {
       reportMatcher(NotNull.NOT_NULL);
-      return null;
+      return Defaults.returnNull();
    }
 
    /**
@@ -554,7 +552,7 @@ public class Matchers {
     */
    public static <T> T notNull(Class<T> clazz) {
       reportMatcher(NotNull.NOT_NULL);
-      return (T) null;
+      return Defaults.returnNull();
    }
 
    /**
@@ -596,7 +594,7 @@ public class Matchers {
     */
    public static String contains(String substring) {
       reportMatcher(new Contains(substring));
-      return "";
+      return Defaults.returnString();
    }
 
    /**
@@ -610,7 +608,7 @@ public class Matchers {
     */
    public static String matches(String regex) {
       reportMatcher(new Matches(regex));
-      return "";
+      return Defaults.returnString();
    }
 
    /**
@@ -624,7 +622,7 @@ public class Matchers {
     */
    public static String endsWith(String suffix) {
       reportMatcher(new EndsWith(suffix));
-      return "";
+      return Defaults.returnString();
    }
 
    /**
@@ -638,7 +636,7 @@ public class Matchers {
     */
    public static String startsWith(String prefix) {
       reportMatcher(new StartsWith(prefix));
-      return "";
+      return Defaults.returnString();
    }
 
    /**
@@ -654,7 +652,7 @@ public class Matchers {
     */
    public static <T> T argThat(Matcher<T> matcher) {
       reportMatcher(matcher);
-      return (T) null;
+      return Defaults.returnNull();
    }
 
    /**
@@ -667,7 +665,7 @@ public class Matchers {
     */
    public static char charThat(Matcher<Character> matcher) {
       reportMatcher(matcher);
-      return '\u0000';
+      return Defaults.returnFor(char.class);
    }
 
    /**
@@ -680,7 +678,7 @@ public class Matchers {
     */
    public static boolean booleanThat(Matcher<Boolean> matcher) {
       reportMatcher(matcher);
-      return false;
+      return Defaults.returnFor(boolean.class);
    }
 
    /**
@@ -693,7 +691,7 @@ public class Matchers {
     */
    public static byte byteThat(Matcher<Byte> matcher) {
       reportMatcher(matcher);
-      return (byte) 0;
+      return Defaults.returnFor(byte.class);
    }
 
    /**
@@ -706,7 +704,7 @@ public class Matchers {
     */
    public static short shortThat(Matcher<Short> matcher) {
       reportMatcher(matcher);
-      return (short) 0;
+      return Defaults.returnFor(short.class);
    }
 
    /**
@@ -719,7 +717,7 @@ public class Matchers {
     */
    public static int intThat(Matcher<Integer> matcher) {
       reportMatcher(matcher);
-      return 0;
+      return Defaults.returnFor(int.class);
    }
 
    /**
@@ -732,7 +730,7 @@ public class Matchers {
     */
    public static long longThat(Matcher<Long> matcher) {
       reportMatcher(matcher);
-      return 0L;
+      return Defaults.returnFor(long.class);
    }
 
    /**
@@ -745,7 +743,7 @@ public class Matchers {
     */
    public static float floatThat(Matcher<Float> matcher) {
       reportMatcher(matcher);
-      return 0F;
+      return Defaults.returnFor(float.class);
    }
 
    /**
@@ -758,24 +756,10 @@ public class Matchers {
     */
    public static double doubleThat(Matcher<Double> matcher) {
       reportMatcher(matcher);
-      return 0D;
+      return Defaults.returnFor(double.class);
    }
 
 
-
-
-   private static <T> T returnFor(Class<T> clazz)
-   {
-      if (isPrimitiveOrWrapper(clazz)) {
-         return defaultValueForPrimitiveOrWrapper(clazz);
-      }
-      return null;
-   }
-
-   private static <T> T returnFor(T instance)
-   {
-      return instance == null ? null : (T) returnFor(instance.getClass());
-   }
 
 
 

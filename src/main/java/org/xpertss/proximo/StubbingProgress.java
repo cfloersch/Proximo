@@ -6,26 +6,18 @@
  */
 package org.xpertss.proximo;
 
-import xpertss.proximo.Answer;
-import xpertss.proximo.Invocation;
 import xpertss.proximo.Matcher;
-import xpertss.proximo.Stubber;
 
 import java.lang.reflect.Method;
 
 public class StubbingProgress {
 
-   private static final ThreadLocal<OngoigStubbing<?>> progress = new ThreadLocal<>();
+   private static final ThreadLocal<OngoingStubbing<?>> progress = new ThreadLocal<>();
 
-   /**
-    * Called by Stubber when {@link Stubber#when} is called.
-    *
-    * @param answer The answer that will be invoked when the stubbed method is
-    *               called.
-    */
-   public <T> void startStubbing(Answer<T> answer)
+
+   public void stubbingStarted(OngoingStubbing stubbing)
    {
-      progress.set(OngoigStubbing.create(answer));
+      progress.set(stubbing);
    }
 
    public boolean isStubbing()
@@ -33,19 +25,13 @@ public class StubbingProgress {
       return progress.get() != null;
    }
 
-   /**
-    * Called when the proxied method is invoked to complete stubbing
-    *
-    * @param invocation The proxy call.
-    */
-   public ProxyRule completeStubbing(Invocation invocation)
+   public ProxyRule stubbingComplete(Object proxy, Method method, Object[] args)
    {
-      Method method = invocation.getMethod();
-      Class[] argTypes = method.getParameterTypes();
-      // TODO Match argument matchers with arguments
-      // else take argument values and wrap in EqualsMatcher
-      return null;
+      OngoingStubbing stubbing = progress.get();
+      progress.remove();
+      return stubbing.stub(proxy, method, args);
    }
+
 
    /**
     * Report a matcher being created, presumably for stubbing in method call
@@ -55,8 +41,8 @@ public class StubbingProgress {
     */
    public void reportMatcher(Matcher<?> matcher)
    {
-      OngoigStubbing<?> stubbing = progress.get();
-      if(stubbing != null) stubbing.addArgumentMatcher(matcher);
+      OngoingStubbing<?> stubbing = progress.get();
+      if(stubbing != null) stubbing.reportMatcher(matcher);
    }
 
 

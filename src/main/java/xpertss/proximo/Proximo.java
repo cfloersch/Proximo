@@ -8,6 +8,11 @@ package xpertss.proximo;
 
 
 import org.xpertss.proximo.ProximoHandler;
+import org.xpertss.proximo.ProxyStubber;
+import org.xpertss.proximo.answers.DoesNothingAnswer;
+import org.xpertss.proximo.answers.ForwardCallAnswer;
+import org.xpertss.proximo.answers.ReturnsAnswer;
+import org.xpertss.proximo.answers.ThrowsAnswer;
 
 import java.lang.reflect.Proxy;
 
@@ -29,17 +34,20 @@ public class Proximo extends Matchers {
     * @return proxy instance
     * @throws NullPointerException if the either the interface type or instance
     *    are {@code null}
-    * @throws IllegalArgumentException if interface type is not an interface
+    * @throws IllegalArgumentException if interface type is not an interface or
+    *    the instance if not assignable to the interface type.
     */
    public static <T> T proxy(Class<T> interfaceType, T instance)
    {
       if(instance == null) throw new NullPointerException("instance");
       if(interfaceType == null) throw new NullPointerException("interfaceType");
       if(!interfaceType.isInterface()) throw new IllegalArgumentException("interfaceType not an interface");
-      if(!instance.getClass().isAssignableFrom(interfaceType)) throw new IllegalArgumentException("instance is not assignable from interfaceType");
 
-      ProximoHandler handler = new ProximoHandler(PROGRESS, instance);
-      return interfaceType.cast(Proxy.newProxyInstance(instance.getClass().getClassLoader(), new Class[] {interfaceType}, handler));
+      Object proxy = Proxy.newProxyInstance(
+                        interfaceType.getClassLoader(),
+                        new Class[] {interfaceType},
+                        ProximoHandler.create(PROGRESS, instance));
+      return interfaceType.cast(proxy);
    }
 
 
@@ -95,8 +103,9 @@ public class Proximo extends Matchers {
     *
     * @return stubber - to select a method for stubbing
     */
-   public static Stubber doNothing() {
-      return null;
+   public static Stubber doNothing()
+   {
+      return new ProxyStubber(PROGRESS, new DoesNothingAnswer());
    }
 
 
@@ -133,7 +142,7 @@ public class Proximo extends Matchers {
     */
    public static Stubber doReturn(Object toBeReturned)
    {
-      return null;
+      return new ProxyStubber(PROGRESS, new ReturnsAnswer(toBeReturned));
    }
 
 
@@ -150,9 +159,9 @@ public class Proximo extends Matchers {
     * @return stubber - to select a method for stubbing
     * @throws NullPointerException if the supplied throwable is {@code null}
     */
-   public static Stubber doThrow(Throwable toBeThrown) {
-      if(toBeThrown == null) throw new NullPointerException("toBeThrown");
-      return null;
+   public static Stubber doThrow(Throwable toBeThrown)
+   {
+      return new ProxyStubber(PROGRESS, new ThrowsAnswer(toBeThrown));
    }
 
 
@@ -160,15 +169,14 @@ public class Proximo extends Matchers {
 
 
    /**
-    * Use <code>doProxyCall()</code> when you want to call the corresponding
+    * Use <code>doForwardCall()</code> when you want to call the corresponding
     * method on the proxied instance. <b>Beware that methods on proxies call
-    * the corresponding method on
-    * the proxied instance by default!</b>
+    * the corresponding method on the proxied instance by default!</b>
     * <p/>
-    * However, doProxyCall() comes in handy when stubbing consecutive calls:
+    * However, doForwardCall() comes in handy when stubbing consecutive calls:
     * <p/>
     * <pre class="code"><code class="java">
-    *   doProxyCall().
+    *   doForwardCall().
     *   doThrow(new RuntimeException())
     *   .when(proxy).someMethod();
     *
@@ -183,8 +191,9 @@ public class Proximo extends Matchers {
     *
     * @return stubber - to select a method for stubbing
     */
-   public static Stubber doProxyCall() {
-      return null;
+   public static Stubber doForwardCall()
+   {
+      return new ProxyStubber(PROGRESS, new ForwardCallAnswer());
    }
 
 
@@ -213,16 +222,10 @@ public class Proximo extends Matchers {
     * @param answer to answer when the stubbed method is called
     * @return stubber - to select a method for stubbing
     */
-   public static Stubber doAnswer(Answer answer) {
-      /*
-      if(!Proxy.isProxyClass(Objects.notNull(proxy).getClass()))
-         throw new IllegalArgumentException("object is not a proxy");
-      InvocationHandler handler = Proxy.getInvocationHandler(proxy);
-      */
-      return null;
+   public static Stubber doAnswer(Answer answer)
+   {
+      if(answer == null) throw new NullPointerException("answer");
+      return new ProxyStubber(PROGRESS, answer);
    }
-
-
-
 
 }

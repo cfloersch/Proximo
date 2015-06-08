@@ -6,6 +6,7 @@
  */
 package org.xpertss.proximo;
 
+import org.xpertss.proximo.util.Utils;
 import xpertss.proximo.Invocation;
 
 import java.lang.reflect.Method;
@@ -22,7 +23,7 @@ public class ProxiedInvocation implements Invocation {
       this.proxied = proxied;
       this.proxy = proxy;
       this.method = method;
-      this.args = args.clone();
+      this.args = Utils.clone(args);
    }
 
 

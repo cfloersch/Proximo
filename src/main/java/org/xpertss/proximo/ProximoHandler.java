@@ -6,9 +6,13 @@
  */
 package org.xpertss.proximo;
 
+import org.xpertss.proximo.answers.ForwardCallAnswer;
+import org.xpertss.proximo.util.Defaults;
+import xpertss.proximo.Answer;
 import xpertss.proximo.Invocation;
 
 import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -20,12 +24,15 @@ public class ProximoHandler implements InvocationHandler {
    private final Map<Method,List<ProxyRule>> stubbings = new HashMap<>();
    private final StubbingProgress progress;
    private final Object proxied;
-
-   public ProximoHandler(StubbingProgress progress, Object proxied)
+   
+   private ProximoHandler(StubbingProgress progress, Object proxied)
    {
       this.progress = progress;
       this.proxied = proxied;
    }
+
+
+
 
    @Override
    public Object invoke(Object proxy, Method method, Object[] args)
@@ -33,34 +40,38 @@ public class ProximoHandler implements InvocationHandler {
    {
       Invocation invocation = new ProxiedInvocation(proxied, proxy, method, args);
       if(progress.isStubbing()) {
-         ProxyRule rule = progress.completeStubbing(invocation);
-         if(rule != null) {
-            List<ProxyRule> rules = stubbings.get(method);
-            if(rules == null) {
-               rules = new LinkedList<>();
-               stubbings.put(method, rules);
-            }
-            rules.add(0, rule);
+         ProxyRule rule = progress.stubbingComplete(proxy, method, args);
+         List<ProxyRule> rules = stubbings.get(method);
+         if(rules == null) {
+            rules = new LinkedList<>();
+            stubbings.put(method, rules);
          }
-         // TODO Probably ought to return something for the method return type
+         rules.add(0, rule);
+         return Defaults.returnFor(method.getReturnType());
       } else {
-         ProxyRule rule = find(stubbings.get(method), args);
-         if(rule != null) {
-            return rule.getAnswer().answer(invocation);
-         } else {
-            return method.invoke(proxied, args);
+         Answer<?> answer = find(stubbings.get(method), invocation);
+         try {
+            return answer.answer(invocation);
+         } catch (InvocationTargetException e) {
+            throw e.getTargetException();
          }
       }
-      return null;
    }
 
 
-   private ProxyRule find(List<ProxyRule> rules, Object[] args)
+   private Answer<?> find(List<ProxyRule> rules, Invocation invocation)
    {
       for(int i = 0; rules != null && i < rules.size(); i++) {
-         if(rules.get(i).matches(args)) return rules.get(i);
+         ProxyRule rule = rules.get(i);
+         if(rule.matches(invocation)) return rule.getAnswer();
       }
-      return null;
+      return new ForwardCallAnswer();
    }
 
+
+
+   public static ProximoHandler create(StubbingProgress progress, Object proxied)
+   {
+      return new ProximoHandler(progress, proxied);
+   }
 }

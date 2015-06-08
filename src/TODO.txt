@@ -3,12 +3,11 @@ It would appear that the best way to handle matchers is to require they be used
   the method arguments in size just throw an Error.
 
 
-Probably ought to create a generic class the implementes the various default
-  return types so that I can use it in the Matchers class as well as the
-  ProximoHandler class to return the appropriate type.
+Add some sort of eq(T[]) and anyArray(Class) method to Matchers.
 
 
-
+It would be nice if I validated the Answers returned the correct type when I
+  create the ProxyRule.
 
 
 Eliminate hamcrest dependency
