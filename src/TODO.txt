@@ -1,3 +1,16 @@
+It would appear that the best way to handle matchers is to require they be used
+  for all arguments. When the invocation is executed if the matchers don't equal
+  the method arguments in size just throw an Error.
+
+
+Probably ought to create a generic class the implementes the various default
+  return types so that I can use it in the Matchers class as well as the
+  ProximoHandler class to return the appropriate type.
+
+
+
+
+
 Eliminate hamcrest dependency
 - I don't need all the functionality necessary for unit test frameworks
   like the ability to describe the issue (SelfDescribing)

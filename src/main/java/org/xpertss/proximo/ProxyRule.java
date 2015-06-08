@@ -23,6 +23,9 @@ public class ProxyRule<T> {
 
    public boolean matches(Object[] args)
    {
+      // TODO Needs to be much more sophisticated
+      // https://github.com/mockito/mockito/blob/master/src/org/mockito/internal/invocation/ArgumentsComparator.java
+
       if(args.length == matchers.length) {
          for(int i = 0; i < args.length; i++) {
             if(!matchers[i].matches(args[i])) return false;
