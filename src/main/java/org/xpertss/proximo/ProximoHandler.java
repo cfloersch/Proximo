@@ -43,6 +43,10 @@ public class ProximoHandler implements InvocationHandler {
          ProxyRule rule = progress.stubbingComplete(proxy, method, args);
          List<ProxyRule> rules = stubbings.get(method);
          if(rules == null) {
+            // TODO Order the rules from most specific to least specific
+            // TODO Use a set to get rid of duplicates
+            // TODO Unfortunately we want the most recently added (sets keep the first added)
+            // TODO A Rule is a duplicate if its argument matchers are all the same
             rules = new LinkedList<>();
             stubbings.put(method, rules);
          }

@@ -6,18 +6,20 @@
  */
 package org.xpertss.proximo;
 
+import xpertss.proximo.Answer;
 import xpertss.proximo.Matcher;
 
 import java.lang.reflect.Method;
+import java.util.Queue;
 
 public class StubbingProgress {
 
    private static final ThreadLocal<OngoingStubbing<?>> progress = new ThreadLocal<>();
 
 
-   public void stubbingStarted(OngoingStubbing stubbing)
+   public void stubbingStarted(Queue<Answer<?>> answers)
    {
-      progress.set(stubbing);
+      progress.set(OngoingStubbing.create(answers));
    }
 
    public boolean isStubbing()

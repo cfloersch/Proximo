@@ -11,7 +11,6 @@ import xpertss.proximo.Stubber;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
 import java.util.LinkedList;
-import java.util.Objects;
 import java.util.Queue;
 
 /**
@@ -34,7 +33,7 @@ public class ProxyStubber implements Stubber {
    {
       InvocationHandler handler = Proxy.getInvocationHandler(Utils.notNull(proxy, "proxy"));
       if(handler instanceof ProximoHandler) {
-         progress.stubbingStarted(OngoingStubbing.create(answers));
+         progress.stubbingStarted(answers);
          return proxy;
       }
       throw new IllegalArgumentException("not a proximo proxy instance");
