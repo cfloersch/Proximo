@@ -380,6 +380,24 @@ public class ProximoTest {
    }
 
 
+   @Test
+   public void testInvocationObject()
+   {
+      final HttpRequest request = new TestHttpRequest();
+      final HttpRequest proxy = Proximo.proxy(HttpRequest.class, request);
+      doAnswer(new Answer() {
+         @Override
+         public Object answer(Invocation invocation) throws Throwable {
+            assertSame(request, invocation.getProxied());
+            assertSame(proxy, invocation.getProxy());
+            return "John";
+         }
+      }).when(proxy).getRemoteUser();
+      assertEquals("John", proxy.getRemoteUser());
+   }
+
+
+
 
    private static class Joiner implements IVarargs {
 
