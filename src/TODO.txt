@@ -1,16 +1,33 @@
-It would appear that the best way to handle matchers is to require they be used
-  for all arguments. When the invocation is executed if the matchers don't equal
-  the method arguments in size just throw an Error.
+Improve VarargMatcher and corresponding matching in ProxyRule to actually
+  expand and match the last method argument. At present it would not be
+  possible to actually match a set of vararg arguments. It might be nice
+  to give a means to match actual args or number of args.
+
+  To do that the OngoingStubbing would need to evaluate the number of
+  matchers vs the number of parameter types. If matchers greater than
+  parameter types and method is vararg then condense final matchers
+  into some sort of array matcher.
 
 
-Add some sort of eq(T[]) and anyArray(Class) method to Matchers.
+Add some sort of means to match exact array values to Matchers. Could
+  be used to validate Varargs as well???
+
+  public static <T> T[] eq(T... elements)
+  public static boolean[] eq(boolean... elements)
+  public static byte[] eq(byte... elements)
+  public static short[] eq(short... elements)
+  public static char[] eq(char... elements)
+  public static int[] eq(int... elements)
+  public static long[] eq(long... elements)
+  public static float[] eq(float... elements)
+  public static double[] eq(double... elements)
+
+
+
+It would be nice if the Stubber returned from a doReturn was typed to force
+  any subsequent doReturn calls in the chain to be the same type.
 
 
 It would be nice if I validated the Answers returned the correct type when I
   create the ProxyRule.
-
-
-Eliminate hamcrest dependency
-- I don't need all the functionality necessary for unit test frameworks
-  like the ability to describe the issue (SelfDescribing)
 

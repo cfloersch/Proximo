@@ -165,9 +165,9 @@ public class Matchers {
     *
     * @return <code>null</code>.
     */
-   public static <T> T anyVararg() {
+   public static <T> T anyVararg(Class<T> type) {
       reportMatcher(AnyVararg.ANY_VARARG);
-      return Defaults.returnNull();
+      return type.cast(Defaults.returnNull());
    }
 
    /**
@@ -645,7 +645,7 @@ public class Matchers {
     * In rare cases when the parameter is a primitive then you <b>*must*</b> use relevant intThat(), floatThat(), etc. method.
     * This way you will avoid <code>NullPointerException</code> during auto-unboxing.
     * <p>
-    * See examples in javadoc for {@link ArgumentMatcher} class
+    * See examples in javadoc for {@link Matcher} class
     *
     * @param matcher decides whether argument matches
     * @return <code>null</code>.

@@ -21,4 +21,15 @@ public class Utils {
       return obj;
    }
 
+
+   public static <T> T first(T[] array)
+   {
+      return (array == null || array.length < 1) ? null : array[0];
+   }
+
+   public static <T> T last(T[] array)
+   {
+      return (array == null || array.length < 1) ? null : array[array.length - 1];
+   }
+
 }

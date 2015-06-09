@@ -6,17 +6,15 @@
  */
 package org.xpertss.proximo.matchers;
 
+import xpertss.proximo.Matcher;
+
 import java.io.Serializable;
-import java.util.Iterator;
 import java.util.List;
 
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
-import org.xpertss.proximo.ArgumentMatcher;
 
 
 @SuppressWarnings("unchecked")
-public class And extends ArgumentMatcher implements Serializable {
+public class And implements Matcher, Serializable {
 
    private static final long serialVersionUID = -4624719625691177501L;
    private final List<Matcher> matchers;
@@ -34,14 +32,4 @@ public class And extends ArgumentMatcher implements Serializable {
       return true;
    }
 
-   public void describeTo(Description description) {
-      description.appendText("and(");
-      for (Iterator<Matcher> it = matchers.iterator(); it.hasNext();) {
-         it.next().describeTo(description);
-         if (it.hasNext()) {
-            description.appendText(", ");
-         }
-      }
-      description.appendText(")");
-   }
 }

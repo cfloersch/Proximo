@@ -6,16 +6,14 @@
  */
 package org.xpertss.proximo.matchers;
 
+import xpertss.proximo.Matcher;
+
 import java.io.Serializable;
-import java.util.Iterator;
 import java.util.List;
 
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
-import org.xpertss.proximo.ArgumentMatcher;
 
 @SuppressWarnings("unchecked")
-public class Or extends ArgumentMatcher implements Serializable {
+public class Or implements Matcher, Serializable {
 
    private static final long serialVersionUID = 5888739035212283087L;
    private final List<Matcher> matchers;
@@ -33,14 +31,4 @@ public class Or extends ArgumentMatcher implements Serializable {
       return false;
    }
 
-   public void describeTo(Description description) {
-      description.appendText("or(");
-      for (Iterator<Matcher> it = matchers.iterator(); it.hasNext();) {
-         it.next().describeTo(description);
-         if (it.hasNext()) {
-            description.appendText(", ");
-         }
-      }
-      description.appendText(")");
-   }
 }

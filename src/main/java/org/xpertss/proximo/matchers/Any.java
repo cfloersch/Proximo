@@ -6,13 +6,13 @@
  */
 package org.xpertss.proximo.matchers;
 
+import xpertss.proximo.Matcher;
+
 import java.io.Serializable;
 
-import org.hamcrest.Description;
-import org.xpertss.proximo.ArgumentMatcher;
 
 @SuppressWarnings("unchecked")
-public class Any extends ArgumentMatcher implements Serializable {
+public class Any implements Matcher, Serializable {
 
    private static final long serialVersionUID = -4062420125651019029L;
    public static final Any ANY = new Any();
@@ -23,7 +23,4 @@ public class Any extends ArgumentMatcher implements Serializable {
       return true;
    }
 
-   public void describeTo(Description description) {
-      description.appendText("<any>");
-   }
 }

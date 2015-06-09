@@ -6,13 +6,12 @@
  */
 package org.xpertss.proximo.matchers;
 
+import xpertss.proximo.Matcher;
+
 import java.io.Serializable;
 
-import org.hamcrest.Description;
-import org.xpertss.proximo.ArgumentMatcher;
 
-
-public class EndsWith extends ArgumentMatcher<String> implements Serializable {
+public class EndsWith implements Matcher, Serializable {
 
    private static final long serialVersionUID = 8556443228350129421L;
    private final String suffix;
@@ -23,9 +22,5 @@ public class EndsWith extends ArgumentMatcher<String> implements Serializable {
 
    public boolean matches(Object actual) {
       return actual != null && ((String) actual).endsWith(suffix);
-   }
-
-   public void describeTo(Description description) {
-      description.appendText("endsWith(\"" + suffix + "\")");
    }
 }

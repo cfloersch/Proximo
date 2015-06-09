@@ -6,13 +6,12 @@
  */
 package org.xpertss.proximo.matchers;
 
+import xpertss.proximo.Matcher;
+
 import java.io.Serializable;
 
-import org.hamcrest.Description;
-import org.xpertss.proximo.ArgumentMatcher;
 
-
-public class InstanceOf extends ArgumentMatcher<Object> implements Serializable {
+public class InstanceOf implements Matcher, Serializable {
 
    private static final long serialVersionUID = 517358915876138366L;
    private final Class<?> clazz;
@@ -23,9 +22,5 @@ public class InstanceOf extends ArgumentMatcher<Object> implements Serializable 
 
    public boolean matches(Object actual) {
       return (actual != null) && clazz.isAssignableFrom(actual.getClass());
-   }
-
-   public void describeTo(Description description) {
-      description.appendText("isA(" + clazz.getName() + ")");
    }
 }

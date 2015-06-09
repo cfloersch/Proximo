@@ -35,7 +35,7 @@ public class OngoingStubbing<T> {
    public ProxyRule stub(Object proxy, Method method, Object[] args)
    {
       if(method.getParameterTypes().length != argMatchers.size())
-         throw new RuntimeException("insufficient argument matchers for method stubbing");
+         throw new IllegalArgumentException("insufficient argument matchers for method stubbing");
       return new ProxyRule(argMatchers.toArray(new Matcher[argMatchers.size()]), answers);
    }
 

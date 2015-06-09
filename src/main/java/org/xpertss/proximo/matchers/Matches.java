@@ -6,13 +6,11 @@
  */
 package org.xpertss.proximo.matchers;
 
+import xpertss.proximo.Matcher;
+
 import java.io.Serializable;
 
-import org.hamcrest.Description;
-import org.xpertss.proximo.ArgumentMatcher;
-
-
-public class Matches extends ArgumentMatcher<Object> implements Serializable {
+public class Matches implements Matcher, Serializable {
 
    private static final long serialVersionUID = 8787704593379472029L;
    private final String regex;
@@ -23,9 +21,5 @@ public class Matches extends ArgumentMatcher<Object> implements Serializable {
 
    public boolean matches(Object actual) {
       return (actual instanceof String) && ((String) actual).matches(regex);
-   }
-
-   public void describeTo(Description description) {
-      description.appendText("matches(\"" + regex.replaceAll("\\\\", "\\\\\\\\") + "\")");
    }
 }

@@ -6,13 +6,12 @@
  */
 package org.xpertss.proximo.matchers;
 
+import xpertss.proximo.Matcher;
+
 import java.io.Serializable;
 
-import org.hamcrest.Description;
-import org.xpertss.proximo.ArgumentMatcher;
 
-
-public class Null extends ArgumentMatcher<Object> implements Serializable {
+public class Null implements Matcher, Serializable {
 
    private static final long serialVersionUID = 2823082637424390314L;
    public static final Null NULL = new Null();
@@ -24,7 +23,4 @@ public class Null extends ArgumentMatcher<Object> implements Serializable {
       return actual == null;
    }
 
-   public void describeTo(Description description) {
-      description.appendText("isNull()");
-   }
 }

@@ -9,6 +9,8 @@ package xpertss.proximo;
 
 /**
  * A matcher over acceptable values.
+ * <p/>
+ * Allows creating customized argument matchers.
  */
 public interface Matcher<T> {
 

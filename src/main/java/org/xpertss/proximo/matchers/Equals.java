@@ -6,11 +6,11 @@
  */
 package org.xpertss.proximo.matchers;
 
-import org.xpertss.proximo.ArgumentMatcher;
+import xpertss.proximo.Matcher;
 
 import java.io.Serializable;
 
-public class Equals extends ArgumentMatcher<Object> implements Serializable {
+public class Equals implements Matcher, Serializable {
 
    private static final long serialVersionUID = -3395637450058086891L;
    private final Object wanted;
