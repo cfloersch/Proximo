@@ -9,19 +9,6 @@ Improve VarargMatcher and corresponding matching in ProxyRule to actually
   into some sort of array matcher.
 
 
-Add some sort of means to match exact array values to Matchers. Could
-  be used to validate Varargs as well???
-
-  public static <T> T[] eq(T... elements)
-  public static boolean[] eq(boolean... elements)
-  public static byte[] eq(byte... elements)
-  public static short[] eq(short... elements)
-  public static char[] eq(char... elements)
-  public static int[] eq(int... elements)
-  public static long[] eq(long... elements)
-  public static float[] eq(float... elements)
-  public static double[] eq(double... elements)
-
 
 
 It would be nice if the Stubber returned from a doReturn was typed to force

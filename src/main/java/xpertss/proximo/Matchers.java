@@ -6,7 +6,6 @@
  */
 package xpertss.proximo;
 
-import org.xpertss.proximo.ArgumentMatcher;
 import org.xpertss.proximo.StubbingProgress;
 import org.xpertss.proximo.matchers.Any;
 import org.xpertss.proximo.matchers.AnyVararg;
@@ -459,8 +458,7 @@ public class Matchers {
     * <p>
     * See examples in javadoc for {@link Matchers} class
     *
-    * @param value
-    *            the given value.
+    * @param value the given value.
     * @return <code>0</code>.
     */
    public static short eq(short value) {
@@ -473,14 +471,14 @@ public class Matchers {
     * <p>
     * See examples in javadoc for {@link Matchers} class
     *
-    * @param value
-    *            the given value.
+    * @param value the given value.
     * @return <code>null</code>.
     */
    public static <T> T eq(T value) {
       reportMatcher(new Equals(value));
       return Defaults.returnFor(value);
    }
+
 
 
    /**
@@ -638,6 +636,13 @@ public class Matchers {
       reportMatcher(new StartsWith(prefix));
       return Defaults.returnString();
    }
+
+
+
+
+
+
+
 
    /**
     * Allows creating custom argument matchers.

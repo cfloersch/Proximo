@@ -2,9 +2,11 @@ package xpertss.proximo;
 
 import org.junit.Test;
 import org.xpertss.proximo.HttpRequest;
+import org.xpertss.proximo.IStream;
 import org.xpertss.proximo.IVarargs;
 import org.xpertss.proximo.ProximoHandler;
 
+import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.lang.reflect.InvocationHandler;
@@ -334,6 +336,26 @@ public class ProximoTest {
    }
 
 
+   @Test
+   public void testStubArrayArgumentMethod() throws IOException
+   {
+      IStream stream = new NullStream();
+      IStream proxy = Proximo.proxy(IStream.class, stream);
+
+      byte[] data = {(byte) 0x00, (byte) 0x01, (byte) 0x02 };
+      byte[] same = {(byte) 0x01, (byte) 0x01, (byte) 0x01 };
+      byte[] front = {(byte) 0x00, (byte) 0x01 };
+      byte[] tail = {(byte) 0x01, (byte) 0x02 };
+      byte[] more = {(byte) 0x00, (byte) 0x01, (byte) 0x02, (byte) 0x03 };
+
+      doNothing().when(proxy).write(eq(data));
+      assertFalse(proxy.write(data));
+      assertTrue(proxy.write(same));
+      assertTrue(proxy.write(front));
+      assertTrue(proxy.write(tail));
+      assertTrue(proxy.write(more));
+   }
+
 
 
    private static class Joiner implements IVarargs {
@@ -349,7 +371,7 @@ public class ProximoTest {
       }
    }
 
-   public static class TestHttpRequest implements HttpRequest {
+   private static class TestHttpRequest implements HttpRequest {
 
       private String user;
 
@@ -381,6 +403,14 @@ public class ProximoTest {
       public Reader getReader()
       {
          return new StringReader("data");
+      }
+   }
+
+   private static class NullStream implements IStream {
+
+      @Override
+      public boolean write(byte[] data) throws IOException {
+         return true;
       }
    }
 }
