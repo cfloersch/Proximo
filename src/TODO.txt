@@ -1,16 +1,3 @@
-Improve VarargMatcher and corresponding matching in ProxyRule to actually
-  expand and match the last method argument. At present it would not be
-  possible to actually match a set of vararg arguments. It might be nice
-  to give a means to match actual args or number of args.
-
-  To do that the OngoingStubbing would need to evaluate the number of
-  matchers vs the number of parameter types. If matchers greater than
-  parameter types and method is vararg then condense final matchers
-  into some sort of array matcher.
-
-
-
-
 It would be nice if the Stubber returned from a doReturn was typed to force
   any subsequent doReturn calls in the chain to be the same type.
 

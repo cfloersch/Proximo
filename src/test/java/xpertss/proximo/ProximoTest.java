@@ -275,9 +275,32 @@ public class ProximoTest {
       assertEquals("Chris,Fred", proxy.join(',', "Chris", "Fred"));
       doNothing().when(proxy).join(anyChar(), anyVararg(String.class));
       assertEquals("", proxy.join(',', "Chris", "Fred"));
+      assertEquals("", proxy.join(',', "Chris", "Fred", "John"));
+
       doReturn("John").when(proxy).join(anyChar(), anyVararg(String.class));
       assertEquals("John", proxy.join(',', "Chris", "Fred"));
    }
+
+   @Test
+   public void testStubVarArgMethodWithIndividualMatchers()
+   {
+      IVarargs joiner = new Joiner();
+      IVarargs proxy = Proximo.proxy(IVarargs.class, joiner);
+      doNothing().when(proxy).join(anyChar(), eq("Chris"), eq("John"));
+      assertEquals("", proxy.join(',', "Chris", "John"));
+      assertEquals("Chris,John,Fred", proxy.join(',', "Chris", "John", "Fred"));
+   }
+
+   @Test
+   public void testStubVarArgMethodWithIndividualAnyMatchers()
+   {
+      IVarargs joiner = new Joiner();
+      IVarargs proxy = Proximo.proxy(IVarargs.class, joiner);
+      doNothing().when(proxy).join(anyChar(), anyString(), anyString());
+      assertEquals("", proxy.join(',', "Chris", "John"));
+      assertEquals("Chris,John,Fred", proxy.join(',', "Chris", "John", "Fred"));
+   }
+
 
    @Test(expected = IllegalArgumentException.class)
    public void testStubIncompleteMatchers()
