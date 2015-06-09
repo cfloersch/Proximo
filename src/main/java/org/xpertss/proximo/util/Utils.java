@@ -1,5 +1,8 @@
 package org.xpertss.proximo.util;
 
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Proxy;
+
 /**
  * Created by cfloersch on 6/8/2015.
  */
@@ -30,6 +33,19 @@ public class Utils {
    public static <T> T last(T[] array)
    {
       return (array == null || array.length < 1) ? null : array[array.length - 1];
+   }
+
+
+   public static <T> T createProxy(Class<T> interfaceType, InvocationHandler handler)
+   {
+      if(handler == null) throw new NullPointerException("handler");
+      if(interfaceType == null) throw new NullPointerException("interfaceType");
+      if(!interfaceType.isInterface()) throw new IllegalArgumentException("interfaceType not an interface");
+
+      Object proxy = Proxy.newProxyInstance(interfaceType.getClassLoader(),
+                        new Class[] { interfaceType },
+                        handler);
+      return interfaceType.cast(proxy);
    }
 
 }

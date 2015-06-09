@@ -51,13 +51,22 @@ public class Proximo extends Matchers {
    }
 
 
-
-
-
-
-
-
-
+   /**
+    * Returns {@code true} if the specified instance is a Proximo proxy instance
+    * {@code false} otherwise.
+    *
+    * @param instance The instance to test
+    * @return {@code true} if its a proximo proxy instance, {@code false} otherwise.
+    */
+   public static boolean isProxy(Object instance)
+   {
+      try {
+         ProximoHandler handler = (ProximoHandler) Proxy.getInvocationHandler(instance);
+         return true;
+      } catch(Exception e) {
+         return false;
+      }
+   }
 
 
 

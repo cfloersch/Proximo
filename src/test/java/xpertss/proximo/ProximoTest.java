@@ -5,11 +5,13 @@ import org.xpertss.proximo.HttpRequest;
 import org.xpertss.proximo.IStream;
 import org.xpertss.proximo.IVarargs;
 import org.xpertss.proximo.ProximoHandler;
+import org.xpertss.proximo.util.Utils;
 
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.List;
@@ -59,6 +61,30 @@ public class ProximoTest {
       InvocationHandler handler = Proxy.getInvocationHandler(proxy);
       assertEquals(ProximoHandler.class, handler.getClass());
    }
+
+
+   @Test
+   public void testIsProxy()
+   {
+      assertFalse(Proximo.isProxy(""));
+
+      List fake = Utils.createProxy(List.class, new InvocationHandler() {
+         @Override
+         public Object invoke(Object proxy, Method method, Object[] args)
+            throws Throwable
+         {
+            return null;
+         }
+      });
+      assertFalse(Proximo.isProxy(fake));
+
+
+      List<String> proxied = new ArrayList<>();
+      List<String> proxy = Proximo.proxy(List.class, proxied);
+      assertTrue(Proximo.isProxy(proxy));
+   }
+
+
 
    @Test
    public void testStubVoidZeroArg()
