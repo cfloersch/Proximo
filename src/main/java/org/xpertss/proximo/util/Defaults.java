@@ -1,3 +1,9 @@
+/**
+ * Copyright 2015 XpertSoftware
+ * <p/>
+ * Created By: cfloersch
+ * Date: 6/7/2015
+ */
 package org.xpertss.proximo.util;
 
 import java.util.Collection;

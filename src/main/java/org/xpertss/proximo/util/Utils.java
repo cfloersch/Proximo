@@ -1,10 +1,16 @@
+/**
+ * Copyright 2015 XpertSoftware
+ * <p/>
+ * Created By: cfloersch
+ * Date: 6/7/2015
+ */
 package org.xpertss.proximo.util;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
 
 /**
- * Created by cfloersch on 6/8/2015.
+ *
  */
 public class Utils {
 
