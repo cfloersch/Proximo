@@ -70,7 +70,7 @@ the actual list will be queried.
 
 Example 2:
 ````
-  Path path = Proximo.proxy(Path.class, realPath);
+  Path proxy = Proximo.proxy(Path.class, realPath);
   doReturn(Paths.get("/")).when(proxy).toRealPath(anyVarargs());
 ````
 
