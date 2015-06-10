@@ -386,6 +386,18 @@ public class ProximoTest {
 
 
    @Test
+   public void testThrowsStack()
+   {
+      HttpRequest request = new TestHttpRequest();
+      HttpRequest proxy = Proximo.proxy(HttpRequest.class, request);
+      doThrow(new RuntimeException()).when(proxy).getRemoteUser();
+      proxy.getRemoteUser();
+
+   }
+
+
+
+   @Test
    public void testStubArrayArgumentMethod() throws IOException
    {
       IStream stream = new NullStream();
@@ -422,6 +434,27 @@ public class ProximoTest {
       assertEquals("John", proxy.getRemoteUser());
    }
 
+
+   @Test
+   public void testOverrideOrdering()
+   {
+      IVarargs instance = new Joiner();
+      IVarargs proxy = Proximo.proxy(IVarargs.class, instance);
+
+      doReturn("five").when(proxy).join(eq(' '), eq("fred"), eq("john"));              // 5
+      doReturn("four-first").when(proxy).join(anyChar(), eq("fred"), eq("john"));      // 4
+      doReturn("four-second").when(proxy).join(eq(' '), eq("fred"));                   // 4
+      doReturn("three").when(proxy).join(anyChar(), eq("fred"));                       // 3
+      doReturn("two").when(proxy).join(anyChar(), anyVararg(String.class));            // 1
+
+      assertEquals("five", proxy.join(' ', "fred", "john"));
+      assertEquals("four-first", proxy.join(',', "fred", "john"));
+      assertEquals("four-second", proxy.join(' ', "fred"));
+      assertEquals("three", proxy.join(',', "fred"));
+      assertEquals("two", proxy.join(' ', "chris", "fred"));
+      assertEquals("two", proxy.join(',', "chris"));
+
+   }
 
 
 

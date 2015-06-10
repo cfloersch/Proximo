@@ -22,4 +22,7 @@ public class StartsWith implements Matcher, Serializable {
    public boolean matches(Object actual) {
       return actual != null && ((String) actual).startsWith(prefix);
    }
+
+   @Override
+   public int specificity() { return SINGLE_SPECIFICITY; }
 }

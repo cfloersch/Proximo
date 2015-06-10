@@ -24,4 +24,7 @@ public class Contains implements Matcher, Serializable {
    public boolean matches(Object actual) {
       return actual != null && ((String) actual).contains(substring);
    }
+
+   @Override
+   public int specificity() { return SINGLE_SPECIFICITY; }
 }

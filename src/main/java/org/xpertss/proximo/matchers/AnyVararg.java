@@ -19,4 +19,7 @@ public class AnyVararg implements Matcher, Serializable {
    public boolean matches(Object arg) {
       return true;
    }
+
+   @Override
+   public int specificity() { return ANY_SPECIFICITY; }
 }

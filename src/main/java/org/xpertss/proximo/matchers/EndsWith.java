@@ -23,4 +23,7 @@ public class EndsWith implements Matcher, Serializable {
    public boolean matches(Object actual) {
       return actual != null && ((String) actual).endsWith(suffix);
    }
+
+   @Override
+   public int specificity() { return SINGLE_SPECIFICITY; }
 }

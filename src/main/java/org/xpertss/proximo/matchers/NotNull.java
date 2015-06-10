@@ -15,12 +15,13 @@ public class NotNull implements Matcher, Serializable {
    private static final long serialVersionUID = 7278261081285153228L;
    public static final NotNull NOT_NULL = new NotNull();
 
-   private NotNull() {
-
-   }
+   private NotNull() { }
 
    public boolean matches(Object actual) {
       return actual != null;
    }
+
+   @Override
+   public int specificity() { return INSTANCE_SPECIFICITY; }
 
 }

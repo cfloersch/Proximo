@@ -14,15 +14,19 @@ import xpertss.proximo.Matcher;
 
 import java.util.Queue;
 
-public class ProxyRule {
+public class ProxyRule implements Comparable<ProxyRule> {
 
    private final Queue<Answer<?>> answers;
    private final Matcher[] matchers;
+   private final int specificity;
+   private final long seq;
 
-   ProxyRule(Matcher[] matchers, Queue<Answer<?>> answers)
+   ProxyRule(Matcher[] matchers, Queue<Answer<?>> answers, long seq)
    {
       this.matchers = Utils.notNull(matchers, "matchers");
       this.answers = Utils.notNull(answers, "answers");
+      this.seq = seq;
+      this.specificity = computeSpecificity(matchers);
    }
 
    public boolean matches(Invocation invocation)
@@ -34,9 +38,27 @@ public class ProxyRule {
       return true;
    }
 
+   public int getSpecificity() { return specificity; }
+
+   public long getSequence() { return seq; }
+
    public Answer<?> getAnswer()
    {
       return (answers.size() > 1) ? answers.poll() : answers.peek();
    }
 
+   @Override
+   public int compareTo(ProxyRule o)
+   {
+      int value = o.getSpecificity() - getSpecificity();
+      return (value != 0) ? value : Utils.safeCast(getSequence() - o.getSequence());
+   }
+
+
+   private static int computeSpecificity(Matcher[] matchers)
+   {
+      int value = 0;
+      for(Matcher matcher : matchers) value += matcher.specificity();
+      return value;
+   }
 }

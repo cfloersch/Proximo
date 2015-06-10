@@ -19,17 +19,25 @@ public class And implements Matcher, Serializable {
    private static final long serialVersionUID = -4624719625691177501L;
    private final List<Matcher> matchers;
 
-   public And(List<Matcher> matchers) {
+   public And(List<Matcher> matchers)
+   {
       this.matchers = matchers;
    }
 
-   public boolean matches(Object actual) {
+   public boolean matches(Object actual)
+   {
       for (Matcher matcher : matchers) {
          if (!matcher.matches(actual)) {
             return false;
          }
       }
       return true;
+   }
+
+   @Override
+   public int specificity()
+   {
+      return MULTI_SPECIFICITY;
    }
 
 }

@@ -22,4 +22,7 @@ public class Matches implements Matcher, Serializable {
    public boolean matches(Object actual) {
       return (actual instanceof String) && ((String) actual).matches(regex);
    }
+
+   @Override
+   public int specificity() { return SINGLE_SPECIFICITY; }
 }

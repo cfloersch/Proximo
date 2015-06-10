@@ -1,3 +1,10 @@
+So in order for varargs to work properly I always need to translate the
+  last matchers into an Array matcher regardless of thats one or several.
+
+We should sort the ProxyRules by their specificity. We want the matcher set
+  that evaluates the arguments to preceed the matcher set that allows ANY.
+
+
 It would be nice if the Stubber returned from a doReturn was typed to force
   any subsequent doReturn calls in the chain to be the same type.
 
@@ -5,3 +12,6 @@ It would be nice if the Stubber returned from a doReturn was typed to force
 It would be nice if I validated the Answers returned the correct type when I
   create the ProxyRule.
 
+Need a matcher that will verify if a given item is contained in a set of
+  varargs as opposed to the current model in which it must be exactly the
+  specified item(s) in the specified order.

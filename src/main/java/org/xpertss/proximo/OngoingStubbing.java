@@ -16,8 +16,11 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class OngoingStubbing<T> {
+
+   private static final AtomicLong sequence = new AtomicLong(0);
 
    private final List<Matcher<?>> argMatchers = new LinkedList<>();
    private final Queue<Answer<?>> answers;
@@ -41,14 +44,16 @@ public class OngoingStubbing<T> {
 
       if(paramTypes.length > matchers.length)
          throw new IllegalArgumentException("argument matcher underflow");
-      if(paramTypes.length < matchers.length) {
-         if(!method.isVarArgs()) throw new IllegalArgumentException("argument matcher overflow");
+      if(method.isVarArgs()) {
+         // TODO Now our anyVararg() doesn't work.
 
          Matcher[] varargs = Arrays.copyOfRange(matchers, paramTypes.length - 1, matchers.length);
          matchers = Arrays.copyOf(matchers, paramTypes.length);
          matchers[paramTypes.length - 1] = new Array(varargs);
+      } else if(paramTypes.length < matchers.length) {
+         throw new IllegalArgumentException("argument matcher overflow");
       }
-      return new ProxyRule(matchers, answers);
+      return new ProxyRule(matchers, answers, sequence.incrementAndGet());
    }
 
    public static <T> OngoingStubbing<T> create(Queue<Answer<?>> answers)

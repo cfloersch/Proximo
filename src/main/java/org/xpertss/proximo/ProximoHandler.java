@@ -14,14 +14,17 @@ import xpertss.proximo.Invocation;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class ProximoHandler implements InvocationHandler {
 
-   private final Map<Method,List<ProxyRule>> stubbings = new HashMap<>();
+   private final Map<Method,Set<ProxyRule>> stubbings = new HashMap<>();
    private final StubbingProgress progress;
    private final Object proxied;
    
@@ -41,37 +44,50 @@ public class ProximoHandler implements InvocationHandler {
       Invocation invocation = new ProxiedInvocation(proxied, proxy, method, args);
       if(progress.isStubbing()) {
          ProxyRule rule = progress.stubbingComplete(proxy, method, args);
-         List<ProxyRule> rules = stubbings.get(method);
+         Set<ProxyRule> rules = stubbings.get(method);
          if(rules == null) {
-            // TODO Order the rules from most specific to least specific
-            // TODO Use a set to get rid of duplicates
-            // TODO Unfortunately we want the most recently added (sets keep the first added)
-            // TODO A Rule is a duplicate if its argument matchers are all the same
-            rules = new LinkedList<>();
+            rules = new TreeSet<>();
             stubbings.put(method, rules);
          }
-         rules.add(0, rule);
+         rules.add(rule);
          return Defaults.returnFor(method.getReturnType());
       } else {
          Answer<?> answer = find(stubbings.get(method), invocation);
          try {
             return answer.answer(invocation);
          } catch (InvocationTargetException e) {
-            throw e.getTargetException();
+            throw filter(e.getTargetException());
+         } catch (Throwable e) {
+            throw filter(e);
          }
       }
    }
 
 
-   private Answer<?> find(List<ProxyRule> rules, Invocation invocation)
+   private Answer<?> find(Set<ProxyRule> rules, Invocation invocation)
    {
-      for(int i = 0; rules != null && i < rules.size(); i++) {
-         ProxyRule rule = rules.get(i);
-         if(rule.matches(invocation)) return rule.getAnswer();
+      if(rules != null) {
+         for(ProxyRule rule : rules) {
+            if(rule.matches(invocation)) return rule.getAnswer();
+         }
       }
       return new ForwardCallAnswer();
    }
 
+
+
+   private static Throwable filter(Throwable throwable)
+   {
+      StackTraceElement[] trace = throwable.getStackTrace();
+      List<StackTraceElement> filtered = new ArrayList<>();
+      for(StackTraceElement element : trace) {
+         if(!element.getClassName().startsWith("org.xpertss.proximo")) {
+            filtered.add(element);
+         }
+      }
+      throwable.setStackTrace(filtered.toArray(new StackTraceElement[filtered.size()]));
+      return throwable;
+   }
 
 
    public static ProximoHandler create(StubbingProgress progress, Object proxied)

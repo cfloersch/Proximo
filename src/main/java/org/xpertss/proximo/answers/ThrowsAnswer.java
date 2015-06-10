@@ -11,6 +11,8 @@ import xpertss.proximo.Answer;
 import xpertss.proximo.Invocation;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -27,8 +29,6 @@ public class ThrowsAnswer implements Answer<Object>, Serializable {
 
    public Object answer(Invocation invocation) throws Throwable
    {
-      // TODO Need to filter out elements of the stack trace which point to this class.
-      // Would like the top element to reflect the method being called.
       throw throwable.fillInStackTrace();
    }
 
@@ -36,4 +36,5 @@ public class ThrowsAnswer implements Answer<Object>, Serializable {
    {
       return throwable;
    }
+
 }

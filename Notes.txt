@@ -4,3 +4,4 @@ The call to invoke inside InvocationHandler will always give us a null
 Vararg methods will always report the vararg as a single argument. It
   will always be the last argument. Its parameter type will always be
   an array who's getComponentType will report the actual type.
+

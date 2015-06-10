@@ -16,11 +16,13 @@ public class Null implements Matcher, Serializable {
    private static final long serialVersionUID = 2823082637424390314L;
    public static final Null NULL = new Null();
 
-   private Null() {
-   }
+   private Null() { }
 
    public boolean matches(Object actual) {
       return actual == null;
    }
+
+   @Override
+   public int specificity() { return INSTANCE_SPECIFICITY; }
 
 }

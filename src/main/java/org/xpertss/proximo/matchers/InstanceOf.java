@@ -23,4 +23,7 @@ public class InstanceOf implements Matcher, Serializable {
    public boolean matches(Object actual) {
       return (actual != null) && clazz.isAssignableFrom(actual.getClass());
    }
+
+   @Override
+   public int specificity() { return (clazz == Object.class) ? ANY_SPECIFICITY : INSTANCE_SPECIFICITY; }
 }

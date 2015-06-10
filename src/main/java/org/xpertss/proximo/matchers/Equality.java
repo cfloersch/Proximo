@@ -6,6 +6,8 @@
  */
 package org.xpertss.proximo.matchers;
 
+import org.xpertss.proximo.util.Utils;
+
 import java.lang.reflect.Array;
 
 public class Equality {
@@ -15,8 +17,8 @@ public class Equality {
          return true;
       } else if (o1 == null || o2 == null) {
          return o1 == null && o2 == null;
-      } else if (isArray(o1)) {
-         return isArray(o2) && areArraysEqual(o1, o2);
+      } else if (Utils.isArray(o1)) {
+         return Utils.isArray(o2) && areArraysEqual(o1, o2);
       } else {
          return o1.equals(o2);
       }
@@ -38,7 +40,4 @@ public class Equality {
       return true;
    }
 
-   static boolean isArray(Object o) {
-      return o.getClass().isArray();
-   }
 }

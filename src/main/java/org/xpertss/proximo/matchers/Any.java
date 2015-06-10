@@ -19,8 +19,15 @@ public class Any implements Matcher, Serializable {
 
    private Any() {}
 
-   public boolean matches(Object actual) {
+   public boolean matches(Object actual)
+   {
       return true;
+   }
+
+   @Override
+   public int specificity()
+   {
+      return ANY_SPECIFICITY;
    }
 
 }

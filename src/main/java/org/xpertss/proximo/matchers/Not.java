@@ -25,4 +25,7 @@ public class Not implements Matcher, Serializable {
       return !first.matches(actual);
    }
 
+   @Override
+   public int specificity() { return first.specificity(); }
+
 }

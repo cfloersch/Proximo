@@ -3,14 +3,18 @@ package org.xpertss.proximo;
 import org.junit.Before;
 import org.junit.Test;
 import org.xpertss.proximo.answers.DoesNothingAnswer;
+import org.xpertss.proximo.matchers.Any;
 import org.xpertss.proximo.matchers.Equals;
 import org.xpertss.proximo.matchers.InstanceOf;
+import org.xpertss.proximo.util.Utils;
 import xpertss.proximo.Answer;
 import xpertss.proximo.Invocation;
 import xpertss.proximo.Matcher;
 
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Set;
+import java.util.TreeSet;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
@@ -37,7 +41,7 @@ public class ProxyRuleTest {
       when(invocation.getArguments()).thenReturn(null, new Object[0]);
 
       Matcher[] matchers = new Matcher[0];
-      ProxyRule rule = new ProxyRule(matchers, answers);
+      ProxyRule rule = new ProxyRule(matchers, answers, 0);
 
       assertTrue(rule.matches(invocation));
       assertTrue(rule.matches(invocation));
@@ -49,7 +53,7 @@ public class ProxyRuleTest {
       when(invocation.getArguments()).thenReturn(new Object[]{"hello"}, new Object[]{null});
 
       Matcher[] matchers = new Matcher[] {new InstanceOf(String.class) };
-      ProxyRule rule = new ProxyRule(matchers, answers);
+      ProxyRule rule = new ProxyRule(matchers, answers, 0);
 
       assertTrue(rule.matches(invocation));
       assertFalse(rule.matches(invocation));
@@ -61,7 +65,7 @@ public class ProxyRuleTest {
       when(invocation.getArguments()).thenReturn(new Object[]{"hello", Integer.valueOf(1)});
 
       Matcher[] matchers = new Matcher[] { new InstanceOf(String.class), new InstanceOf(Integer.class) };
-      ProxyRule rule = new ProxyRule(matchers, answers);
+      ProxyRule rule = new ProxyRule(matchers, answers, 0);
 
       assertTrue(rule.matches(invocation));
    }
@@ -72,7 +76,7 @@ public class ProxyRuleTest {
       when(invocation.getArguments()).thenReturn(new Object[]{"hello"});
 
       Matcher[] matchers = new Matcher[] { new Equals("Goodbye") };
-      ProxyRule rule = new ProxyRule(matchers, answers);
+      ProxyRule rule = new ProxyRule(matchers, answers, 0);
 
       assertFalse(rule.matches(invocation));
    }
@@ -83,7 +87,7 @@ public class ProxyRuleTest {
       when(invocation.getArguments()).thenReturn(new Object[]{"hello"});
 
       Matcher[] matchers = new Matcher[] { new Equals("hello") };
-      ProxyRule rule = new ProxyRule(matchers, answers);
+      ProxyRule rule = new ProxyRule(matchers, answers, 0);
 
       assertTrue(rule.matches(invocation));
    }
@@ -95,7 +99,7 @@ public class ProxyRuleTest {
       Answer answer = new DoesNothingAnswer();
       answers.offer(answer);
 
-      ProxyRule rule = new ProxyRule(new Matcher[0], answers);
+      ProxyRule rule = new ProxyRule(new Matcher[0], answers, 0);
       assertSame(answer, rule.getAnswer());
       assertSame(answer, rule.getAnswer());
    }
@@ -108,10 +112,41 @@ public class ProxyRuleTest {
       Answer second = new DoesNothingAnswer();
       answers.offer(second);
 
-      ProxyRule rule = new ProxyRule(new Matcher[0], answers);
+      ProxyRule rule = new ProxyRule(new Matcher[0], answers, 0);
       assertSame(first, rule.getAnswer());
       assertSame(second, rule.getAnswer());
       assertSame(second, rule.getAnswer());
    }
+
+   private Queue<Answer<?>> result = new LinkedList<>();
+
+
+   @Test
+   public void testOrderingSameSpecificity()
+   {
+      Set<ProxyRule> rules = new TreeSet<>();
+      rules.add(new ProxyRule(Utils.toArray(Any.ANY), result, 1));
+      rules.add(new ProxyRule(Utils.toArray(Any.ANY), result, 2));
+
+      ProxyRule[] ordered = rules.toArray(new ProxyRule[rules.size()]);
+
+      assertEquals(1, ordered[0].getSequence());
+      assertEquals(2, ordered[1].getSequence());
+   }
+
+   @Test
+   public void testOrderingDifferentSpecificity()
+   {
+      Set<ProxyRule> rules = new TreeSet<>();
+      rules.add(new ProxyRule(Utils.toArray(Any.ANY), result, 2));
+      rules.add(new ProxyRule(Utils.toArray(new InstanceOf(String.class)), result, 1));
+
+      ProxyRule[] ordered = rules.toArray(new ProxyRule[rules.size()]);
+
+      assertEquals(1, ordered[0].getSequence());
+      assertEquals(2, ordered[1].getSequence());
+   }
+
+
 
 }

@@ -36,4 +36,10 @@ public class Array implements Matcher, Serializable {
       }
       return false;
    }
+
+   @Override
+   public int specificity()
+   {
+      return (matchers.length > 1) ? MULTI_SPECIFICITY : matchers[0].specificity();
+   }
 }

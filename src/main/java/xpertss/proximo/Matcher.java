@@ -15,6 +15,31 @@ package xpertss.proximo;
 public interface Matcher<T> {
 
    /**
+    * Any matcher that matches any supplied object should return this as
+    * their specificity.
+    */
+   public static final int ANY_SPECIFICITY = 0;
+
+   /**
+    * Any matcher that checks type but not value should return this as
+    * their specificity. This would also include null or not null checks.
+    */
+   public static final int INSTANCE_SPECIFICITY = 1;
+
+   /**
+    * Any matcher that checks a single argument value should return this
+    * as their specificity.
+    */
+   public static final int SINGLE_SPECIFICITY = 2;
+
+   /**
+    * Any matcher that checks multiple argument values (think varargs) should
+    * return this as their specificity.
+    */
+   public static final int MULTI_SPECIFICITY = 3;
+
+
+   /**
     * Evaluates the matcher for argument <var>item</var>.
     * <p/>
     * This method matches against Object, instead of the generic type T. This is
@@ -26,5 +51,12 @@ public interface Matcher<T> {
     * @return <code>true</code> if <var>item</var> matches, otherwise <code>false</code>.
     */
    boolean matches(Object item);
+
+   /**
+    * This returns the specificity of the matcher so that rules may be sorted from
+    * the most specific to the least specific.
+    * @return
+    */
+   int specificity();
 
 }

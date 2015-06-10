@@ -41,6 +41,30 @@ public class Utils {
       return (array == null || array.length < 1) ? null : array[array.length - 1];
    }
 
+   public static boolean isArray(Object o)
+   {
+      return (o != null && o.getClass().isArray());
+   }
+
+   public static <T> T[] toArray(T... args)
+   {
+      return args;
+   }
+
+   /**
+    * Returns the {@code int} value that is equal to {@code value}, if possible.
+    *
+    * @param value any value in the range of the {@code int} type
+    * @return the {@code int} value that equals {@code value}
+    * @throws ArithmeticException if {@code value} is greater than {@link
+    *     Integer#MAX_VALUE} or less than {@link Integer#MIN_VALUE}
+    */
+   public static int safeCast(long value)
+   {
+      if(Integer.MIN_VALUE <= value && value <= Integer.MAX_VALUE) return (int) value;
+      throw new ArithmeticException();
+   }
+
 
    public static <T> T createProxy(Class<T> interfaceType, InvocationHandler handler)
    {
