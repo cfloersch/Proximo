@@ -55,7 +55,7 @@ The above example wraps Map instance and forces all of the key's to be upper cas
 Argument Matchers
 =================
 
-Argument matchers allow specific method calls (with arguments) from being overridden.
+Argument matchers allow specific method calls (with arguments) to be overridden.
 
 Example:
 ````
