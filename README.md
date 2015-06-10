@@ -1,7 +1,7 @@
 # Proximo
 
 Proximo is a rip off of the mockito mocking system but applied to java.lang.reflect.Proxy
-instances. It provides a simple declarative means to creating proxies and stubbing method
+instances. It provides a simple declarative means for creating proxies and stubbing method
 behavior overrides.
 
 
@@ -9,6 +9,7 @@ Example 1:
 ````
   HttpServletRequest proxy = Proximo.proxy(HttpServletRequest.class, request);
   doReturn("joeshmoe").when(proxy).getRemoteUser();
+  filterChain.doFilter(proxy, response);
 ````
 
 The above example overrides the getRemoteUser() method from HttpServletRequest to return a
@@ -49,7 +50,8 @@ Example 4:
 
 ````
 
-The above example wraps Map instance and forces all of the key's to be upper case.
+The above example wraps Map instance and forces all of the key's to be upper case using a custom
+behavior.
 
 
 Argument Matchers
