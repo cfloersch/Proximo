@@ -29,7 +29,7 @@ public class Same implements Matcher, Serializable {
    @Override
    public int specificity()
    {
-      return SINGLE_SPECIFICITY;
+      return VALUE_SPECIFICITY;
    }
 
 }

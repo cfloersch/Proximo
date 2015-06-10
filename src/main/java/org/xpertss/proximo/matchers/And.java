@@ -6,6 +6,7 @@
  */
 package org.xpertss.proximo.matchers;
 
+import org.xpertss.proximo.util.Utils;
 import xpertss.proximo.Matcher;
 
 import java.io.Serializable;
@@ -18,10 +19,12 @@ public class And implements Matcher, Serializable {
 
    private static final long serialVersionUID = -4624719625691177501L;
    private final List<Matcher> matchers;
+   private final int specificity;
 
    public And(List<Matcher> matchers)
    {
-      this.matchers = matchers;
+      this.matchers = Utils.notNull(matchers);
+      this.specificity = Utils.computeSpecificity(matchers);
    }
 
    public boolean matches(Object actual)
@@ -37,7 +40,7 @@ public class And implements Matcher, Serializable {
    @Override
    public int specificity()
    {
-      return MULTI_SPECIFICITY;
+      return specificity;
    }
 
 }

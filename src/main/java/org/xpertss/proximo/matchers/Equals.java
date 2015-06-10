@@ -10,6 +10,7 @@ import org.xpertss.proximo.util.Utils;
 import xpertss.proximo.Matcher;
 
 import java.io.Serializable;
+import java.lang.reflect.Array;
 
 public class Equals implements Matcher, Serializable {
 
@@ -29,7 +30,10 @@ public class Equals implements Matcher, Serializable {
    @Override
    public int specificity()
    {
-      return Utils.isArray(wanted) ? MULTI_SPECIFICITY : SINGLE_SPECIFICITY;
+      if(Utils.isArray(wanted)) {
+         return Array.getLength(wanted) * VALUE_SPECIFICITY;
+      }
+      return VALUE_SPECIFICITY;
    }
 
 }

@@ -6,7 +6,9 @@
  */
 package org.xpertss.proximo;
 
+import org.xpertss.proximo.matchers.AnyVararg;
 import org.xpertss.proximo.matchers.Array;
+import org.xpertss.proximo.util.Lists;
 import org.xpertss.proximo.util.Utils;
 import xpertss.proximo.Answer;
 import xpertss.proximo.Matcher;
@@ -22,7 +24,7 @@ public class OngoingStubbing<T> {
 
    private static final AtomicLong sequence = new AtomicLong(0);
 
-   private final List<Matcher<?>> argMatchers = new LinkedList<>();
+   private final List<Matcher> matchers = new LinkedList<>();
    private final Queue<Answer<?>> answers;
 
    private OngoingStubbing(Queue<Answer<?>> answers)
@@ -34,26 +36,28 @@ public class OngoingStubbing<T> {
 
    public void reportMatcher(Matcher<?> matcher)
    {
-      argMatchers.add(matcher);
+      matchers.add(matcher);
    }
+
 
    public ProxyRule stub(Object proxy, Method method, Object[] args)
    {
-      Matcher[] matchers = argMatchers.toArray(new Matcher[argMatchers.size()]);
       Class[] paramTypes = method.getParameterTypes();
 
-      if(paramTypes.length > matchers.length)
+      List<Matcher> argMatchers = matchers;
+      if(paramTypes.length > argMatchers.size())
          throw new IllegalArgumentException("argument matcher underflow");
       if(method.isVarArgs()) {
-         // TODO Now our anyVararg() doesn't work.
-
-         Matcher[] varargs = Arrays.copyOfRange(matchers, paramTypes.length - 1, matchers.length);
-         matchers = Arrays.copyOf(matchers, paramTypes.length);
-         matchers[paramTypes.length - 1] = new Array(varargs);
-      } else if(paramTypes.length < matchers.length) {
+         Matcher varArg = argMatchers.get(paramTypes.length - 1);
+         if(!(varArg instanceof AnyVararg)) {
+            Array varArgArray = new Array(Lists.tail(argMatchers, paramTypes.length - 1));
+            argMatchers = Lists.subList(argMatchers, 0, paramTypes.length - 1);
+            argMatchers.add(varArgArray);
+         }
+      } else if(paramTypes.length < matchers.size()) {
          throw new IllegalArgumentException("argument matcher overflow");
       }
-      return new ProxyRule(matchers, answers, sequence.incrementAndGet());
+      return new ProxyRule(argMatchers, answers, sequence.incrementAndGet());
    }
 
    public static <T> OngoingStubbing<T> create(Queue<Answer<?>> answers)

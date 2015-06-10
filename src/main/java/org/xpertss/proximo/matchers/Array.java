@@ -10,17 +10,20 @@ import org.xpertss.proximo.util.Utils;
 import xpertss.proximo.Matcher;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  *
  */
 public class Array implements Matcher, Serializable {
 
-   private final Matcher[] matchers;
+   private final List<Matcher> matchers;
+   private final int specificity;
 
-   public Array(Matcher[] matchers)
+   public Array(List<Matcher> matchers)
    {
       this.matchers = Utils.notNull(matchers);
+      this.specificity = Utils.computeSpecificity(matchers);
    }
 
    @Override
@@ -28,9 +31,9 @@ public class Array implements Matcher, Serializable {
    {
       if(item != null && item.getClass().isArray()) {
          Object[] items = (Object[]) item;
-         if(items.length != matchers.length) return false;
+         if(items.length != matchers.size()) return false;
          for(int i = 0; i < items.length; i++) {
-            if(!matchers[i].matches(items[i])) return false;
+            if(!matchers.get(i).matches(items[i])) return false;
          }
          return true;
       }
@@ -40,6 +43,6 @@ public class Array implements Matcher, Serializable {
    @Override
    public int specificity()
    {
-      return (matchers.length > 1) ? MULTI_SPECIFICITY : matchers[0].specificity();
+      return specificity;
    }
 }

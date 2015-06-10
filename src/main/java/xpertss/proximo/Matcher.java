@@ -30,13 +30,8 @@ public interface Matcher<T> {
     * Any matcher that checks a single argument value should return this
     * as their specificity.
     */
-   public static final int SINGLE_SPECIFICITY = 2;
+   public static final int VALUE_SPECIFICITY = 2;
 
-   /**
-    * Any matcher that checks multiple argument values (think varargs) should
-    * return this as their specificity.
-    */
-   public static final int MULTI_SPECIFICITY = 3;
 
 
    /**

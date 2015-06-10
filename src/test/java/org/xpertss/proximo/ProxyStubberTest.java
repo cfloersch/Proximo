@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Queue;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.doAnswer;
@@ -59,16 +60,24 @@ public class ProxyStubberTest {
    public void testDoNothing()
    {
       ProxyStubber stubber = new ProxyStubber(progress, new DoesNothingAnswer());
+
+      doAnswer(new Answer() {
+         @Override
+         public Object answer(InvocationOnMock invocation)
+            throws Throwable
+         {
+            Queue<xpertss.proximo.Answer> answers = (Queue<xpertss.proximo.Answer>) invocation.getArguments()[0];
+            assertEquals(DoesNothingAnswer.class, answers.poll().getClass());
+            assertTrue(answers.isEmpty());
+            return null;
+         }
+      }).when(progress).stubbingStarted(any(Queue.class));
+
       Runnable stubProxy = stubber.when(proxy);
 
       verify(progress, times(1)).stubbingStarted(any(Queue.class));
       verify(progress, never()).reportMatcher(any(Matcher.class));
       verify(progress, never()).stubbingComplete(anyObject(), any(Method.class), any(Object[].class));
-
-      stubProxy.run();
-
-      verify(progress, never()).reportMatcher(any(Matcher.class));
-      verify(progress, times(1)).stubbingComplete(anyObject(), any(Method.class), any(Object[].class));
 
    }
 
@@ -96,6 +105,7 @@ public class ProxyStubberTest {
             assertEquals(ThrowsAnswer.class, answers.poll().getClass());
             assertEquals(ForwardCallAnswer.class, answers.poll().getClass());
             assertEquals(DoesNothingAnswer.class, answers.poll().getClass());
+            assertTrue(answers.isEmpty());
 
             return null;
          }

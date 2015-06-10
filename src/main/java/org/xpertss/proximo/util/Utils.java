@@ -6,8 +6,11 @@
  */
 package org.xpertss.proximo.util;
 
+import xpertss.proximo.Matcher;
+
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
+import java.util.List;
 
 /**
  *
@@ -65,6 +68,12 @@ public class Utils {
       throw new ArithmeticException();
    }
 
+   public static int computeSpecificity(List<Matcher> matchers)
+   {
+      int value = 0;
+      for(Matcher matcher : matchers) value += matcher.specificity();
+      return value;
+   }
 
    public static <T> T createProxy(Class<T> interfaceType, InvocationHandler handler)
    {

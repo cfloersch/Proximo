@@ -24,5 +24,5 @@ public class StartsWith implements Matcher, Serializable {
    }
 
    @Override
-   public int specificity() { return SINGLE_SPECIFICITY; }
+   public int specificity() { return VALUE_SPECIFICITY; }
 }

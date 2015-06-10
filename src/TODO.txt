@@ -1,8 +1,8 @@
-So in order for varargs to work properly I always need to translate the
-  last matchers into an Array matcher regardless of thats one or several.
+Improve significantly the anyVararg implementation. It should at least verify
+  that the argument supplied to it is an array (a must for a varArg). Now that
+  I am asking for the type (to satisfy the return type) it would be nice to
+  actually verify the Vararg array's component type as well.
 
-We should sort the ProxyRules by their specificity. We want the matcher set
-  that evaluates the arguments to preceed the matcher set that allows ANY.
 
 
 It would be nice if the Stubber returned from a doReturn was typed to force
