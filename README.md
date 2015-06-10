@@ -45,7 +45,7 @@ Example 4:
       String value = invocation.getArgumentAt(1, String.class);
       return invocation.getMethod().invoke(invocation.getProxied(), new Object[] { key, value });
    }
-  }).when(proxy).put(anyString(),anyString());
+  }).when(cache).put(anyString(),anyString());
 
 ````
 
@@ -53,14 +53,14 @@ The above example wraps Map instance and forces all of the key's to be upper cas
 
 
 Argument Matchers
-=================
+-----------------
 
 Argument matchers allow specific method calls (with arguments) to be overridden.
 
 Example:
 ````
   List<String> list = Proximo.proxy(List.class, myBackingList);
-  doReturn("john?").when(proxy).get(eq(0));
+  doReturn("john?").when(list).get(eq(0));
 ````
 
 In the above example the proxied instance's get method will NOT be called if and only if the
@@ -70,12 +70,15 @@ the actual list will be queried.
 
 Example 2:
 ````
-  Path proxy = Proximo.proxy(Path.class, realPath);
-  doReturn(Paths.get("/")).when(proxy).toRealPath(anyVarargs());
+   public interface Joiner {
+      public String join(char c, Object... objects);
+   }
+   Joiner proxy = Proximo.proxy(Joiner.class, myJoinerImpl);
+   doReturn("Ha Ha").when(proxy).join(anyChar(), anyVarargs());
 ````
 
-The above example we return the root path whenever toRealPath is called regardless of the link
-options specified.
+The above example we return "Ha Ha" for any call made to the vararg method join irrespective to
+the type or number of variable arguments.
 
 Example 3:
 ````
@@ -83,7 +86,7 @@ Example 3:
       public String join(char c, Object... objects);
    }
    Joiner proxy = Proximo.proxy(Joiner.class, myJoinerImpl);
-   doNothing().when(proxy).join(anyChar(), "chris", anyString());
+   doNothing().when(proxy).join(anyChar(), eq("chris"), anyString());
 
    // prints nothing
    System.out.println(proxy.join(' ', "chris", "singer"));
@@ -103,7 +106,7 @@ not match because there are three strings supplied rather than the stubbed requi
 
 
 Chaining
-========
+--------
 
 In the rare event that you wish subsequent calls to behave differently you may use chaining to
 accomplish that goal.
