@@ -127,3 +127,41 @@ actually forward the call to the proxied list instance resulting in its content'
 
 The important thing to note is that the last DO operation will be executed on all subsequent calls
 after the initial set of DO operations have been executed.
+
+
+Precedence
+----------
+
+When a stubbed method is executed a matching answer is found using a precedence from most specific
+to least specific. That means matchers that are more specific will be evaluated before those that
+are less specific.
+
+Example:
+````
+  List<String> proxy = Proximo.proxy(List.class, myList);
+  doReturn("no").when(proxy).get(eq(3));
+  doReturn("yes").when(proxy).get(anyInt());
+````
+
+In the above example the stubbing which returns "no" is more specific than the stubbing that returns
+"yes" and as such will be evaluated first for a match. If the supplied argument is three it will of
+course match and be executed. For all other values we fall through to the more generic stubbing which
+accepts any integer value.
+
+Example 2:
+````
+   public interface Joiner {
+      public String join(char c, Object... objects);
+   }
+   Joiner proxy = Proximo.proxy(Joiner.class, myJoinerImpl);
+   doReturn("yes").when(proxy).join(anyChar(), eq("fred"));
+   doReturn("no").when(proxy).join(eq(' '), anyString());
+
+   // prints "no"
+   System.out.println(proxy.join(' ', "fred");
+````
+
+In the above example it is ambiguous which is more specific as they both have a single highly specific
+matcher and a secondary generic matcher. In this case the one stubbed last will be evaluated first. It
+will in effect override the first stubbing in all cases where the separator char is a space.
+

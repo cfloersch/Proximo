@@ -466,6 +466,18 @@ public class ProximoTest {
       assertEquals("success", proxy.join(' '));
    }
 
+   @Test
+   public void testOverrideSpecificity()
+   {
+      IVarargs instance = new Joiner();
+      IVarargs proxy = Proximo.proxy(IVarargs.class, instance);
+      doReturn("yes").when(proxy).join(anyChar(), eq("fred"));
+      doReturn("no").when(proxy).join(eq(' '), anyString());
+
+      assertEquals("no", proxy.join(' ', "fred"));
+      assertEquals("yes", proxy.join('-', "fred"));
+   }
+
 
    private static class Joiner implements IVarargs {
 
