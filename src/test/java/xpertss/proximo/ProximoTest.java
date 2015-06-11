@@ -457,6 +457,15 @@ public class ProximoTest {
    }
 
 
+   @Test
+   public void testNoVarArgs()
+   {
+      IVarargs instance = new Joiner();
+      IVarargs proxy = Proximo.proxy(IVarargs.class, instance);
+      doReturn("success").when(proxy).join(anyChar(), anyVararg(String.class));
+      assertEquals("success", proxy.join(' '));
+   }
+
 
    private static class Joiner implements IVarargs {
 

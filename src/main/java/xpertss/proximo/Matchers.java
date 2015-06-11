@@ -32,7 +32,7 @@ import java.util.Set;
  * return a value when its called with argument X and throw an exception when its
  * called with argument Y for example.
  */
-@SuppressWarnings("unchecked")
+@SuppressWarnings({ "unchecked", "ConstantConditions", "unused" })
 public class Matchers {
 
    static final StubbingProgress PROGRESS = new StubbingProgress();
@@ -165,7 +165,7 @@ public class Matchers {
     * @return <code>null</code>.
     */
    public static <T> T anyVararg(Class<T> type) {
-      reportMatcher(AnyVararg.ANY_VARARG);
+      reportMatcher(new AnyVararg(type));
       return type.cast(Defaults.returnNull());
    }
 

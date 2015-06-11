@@ -8,24 +8,27 @@ package org.xpertss.proximo.matchers;
 
 import java.io.Serializable;
 
+import org.xpertss.proximo.util.Utils;
 import xpertss.proximo.Matcher;
 
 @SuppressWarnings("unchecked")
 public class AnyVararg implements Matcher, Serializable {
 
-   // TODO It would be nice to test if the specified arg is
-   // an array and that the component type matches the type
-   // specified during construction.
-
    private static final long serialVersionUID = 1700721373094731555L;
-   public static final Matcher ANY_VARARG = new AnyVararg();
+   private final Class<?> clazz;
 
-   public boolean matches(Object arg) {
-      return true;
+   public AnyVararg(Class<?> clazz)
+   {
+      this.clazz = clazz;
+   }
+
+   public boolean matches(Object arg)
+   {
+      return Utils.isArray(arg) && clazz.isAssignableFrom(arg.getClass().getComponentType());
    }
 
 
-   // TODO The specificity should be 0 if type is Object.class otherwise it should be 1
    @Override
-   public int specificity() { return ANY_SPECIFICITY; }
+   public int specificity() { return (clazz == Object.class) ? ANY_SPECIFICITY : INSTANCE_SPECIFICITY; }
+
 }
