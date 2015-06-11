@@ -107,27 +107,6 @@ does not match because the second vararg is an Integer rather than a string. The
 not match because there are three strings supplied rather than the stubbed requirement of two.
 
 
-Chaining
---------
-
-In the rare event that you wish subsequent calls to behave differently you may use chaining to
-accomplish that goal.
-
-Example:
-````
-   List<String> items = Proximo.proxy(List.class, myList);
-   doNothing()
-     .doForwardCall()
-     .when(items)
-     .clear();
-````
-
-In the above example the first call to clear will do nothing. All subsequent calls to clear will
-actually forward the call to the proxied list instance resulting in its content's being cleared.
-
-The important thing to note is that the last DO operation will be executed on all subsequent calls
-after the initial set of DO operations have been executed.
-
 
 Precedence
 ----------
@@ -165,3 +144,24 @@ In the above example it is ambiguous which is more specific as they both have a 
 matcher and a secondary generic matcher. In this case the one stubbed last will be evaluated first. It
 will in effect override the first stubbing in all cases where the separator char is a space.
 
+
+Chaining
+--------
+
+In the rare event that you wish subsequent calls to behave differently you may use chaining to
+accomplish that goal.
+
+Example:
+````
+   List<String> items = Proximo.proxy(List.class, myList);
+   doNothing()
+     .doForwardCall()
+     .when(items)
+     .clear();
+````
+
+In the above example the first call to clear will do nothing. All subsequent calls to clear will
+actually forward the call to the proxied list instance resulting in its content's being cleared.
+
+The important thing to note is that the last DO operation will be executed on all subsequent calls
+after the initial set of DO operations have been executed.
