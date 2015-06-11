@@ -1,3 +1,8 @@
+When we stub a method call we need to look at the answers and determine if
+  any of them return a type incompatible with the return type of the method.
+  This should include possible null returns on primitive return types.
+
+
 It would be nice if the Stubber returned from a doReturn was typed to force
   any subsequent doReturn calls in the chain to be the same type.
 

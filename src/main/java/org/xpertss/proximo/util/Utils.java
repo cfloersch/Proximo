@@ -15,6 +15,7 @@ import java.util.List;
 /**
  *
  */
+@SuppressWarnings({ "unchecked", "unused" })
 public class Utils {
 
    public static Object[] clone(Object[] array)

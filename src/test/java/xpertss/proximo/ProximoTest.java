@@ -30,6 +30,7 @@ import static xpertss.proximo.Proximo.doThrow;
 /**
  *
  */
+@SuppressWarnings("unchecked")
 public class ProximoTest {
 
    @Test(expected = NullPointerException.class)
@@ -49,7 +50,7 @@ public class ProximoTest {
    @Test(expected = IllegalArgumentException.class)
    public void testProxyNotInterface()
    {
-      Proximo.proxy(String.class, new String(""));
+      Proximo.proxy(String.class, "");
    }
 
    @Test
@@ -385,15 +386,6 @@ public class ProximoTest {
    }
 
 
-   //@Test
-   public void testThrowsStack()
-   {
-      HttpRequest request = new TestHttpRequest();
-      HttpRequest proxy = Proximo.proxy(HttpRequest.class, request);
-      doThrow(new RuntimeException()).when(proxy).getRemoteUser();
-      proxy.getRemoteUser();
-
-   }
 
 
 
