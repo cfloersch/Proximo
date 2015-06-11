@@ -2,6 +2,13 @@ When we stub a method call we need to look at the answers and determine if
   any of them return a type incompatible with the return type of the method.
   This should include possible null returns on primitive return types.
 
+  This could be very difficult to implement in light of custom Answers. All
+  I would have on those to determine what they return MIGHT be a generic
+  type. Maybe that will work? I would like to try. Of course the generic
+  type could be Object while the answer really returns a String. If I use
+  generic types I would throw a ClassCastException when none would really
+  be necessary.
+
 
 It would be nice if the Stubber returned from a doReturn was typed to force
   any subsequent doReturn calls in the chain to be the same type.
