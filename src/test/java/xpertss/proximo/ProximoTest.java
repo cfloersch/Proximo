@@ -1,6 +1,7 @@
 package xpertss.proximo;
 
 import org.junit.Test;
+import org.xpertss.proximo.Autoboxing;
 import org.xpertss.proximo.HttpRequest;
 import org.xpertss.proximo.IStream;
 import org.xpertss.proximo.IVarargs;
@@ -368,23 +369,66 @@ public class ProximoTest {
 
 
 
-   @Test(expected = ClassCastException.class)
-   public void testStubInvalidReturnType()
+
+
+
+   @Test(expected = IllegalArgumentException.class)
+   public void testInvalidReturnType()
    {
       HttpRequest request = new TestHttpRequest();
       HttpRequest proxy = Proximo.proxy(HttpRequest.class, request);
       doReturn(34).when(proxy).getRemoteUser();
-      proxy.getRemoteUser();
    }
 
-   // TODO @Test(expected = ClassCastException.class)
-   public void testStubInvalidReturnTypeOnStubbing()
+   @Test(expected = IllegalArgumentException.class)
+   public void testInvalidExceptionType()
    {
       HttpRequest request = new TestHttpRequest();
       HttpRequest proxy = Proximo.proxy(HttpRequest.class, request);
-      doReturn(34).when(proxy).getRemoteUser(); // TODO I want this to throw the class cast exception
+      doThrow(new Exception()).when(proxy).getRemoteUser();
    }
 
+
+
+   @Test(expected = IllegalArgumentException.class)
+   public void testAutoboxingNullOnPrimitive()
+   {
+      Autoboxing instance = new AutoboxingInt();
+      Autoboxing proxy = Proximo.proxy(Autoboxing.class, instance);
+      doReturn(null).when(proxy).getInt();
+   }
+
+   @Test // No exception
+   public void testAutoboxingIntegerOnPrimitive()
+   {
+      Autoboxing instance = new AutoboxingInt();
+      Autoboxing proxy = Proximo.proxy(Autoboxing.class, instance);
+      doReturn(Integer.valueOf(10)).when(proxy).getInt();
+   }
+
+   @Test // No exception
+   public void testAutoboxingIntOnPrimitive()
+   {
+      Autoboxing instance = new AutoboxingInt();
+      Autoboxing proxy = Proximo.proxy(Autoboxing.class, instance);
+      doReturn(10).when(proxy).getInt();  // this gets boxed anyway
+   }
+
+   @Test // No exception
+   public void testAutoboxingIntOnObject()
+   {
+      Autoboxing instance = new AutoboxingInt();
+      Autoboxing proxy = Proximo.proxy(Autoboxing.class, instance);
+      doReturn(10).when(proxy).getInteger();
+   }
+
+   @Test // No exception
+   public void testAutoboxingNullOnObject()
+   {
+      Autoboxing instance = new AutoboxingInt();
+      Autoboxing proxy = Proximo.proxy(Autoboxing.class, instance);
+      doReturn(null).when(proxy).getInteger();
+   }
 
 
 
@@ -524,6 +568,21 @@ public class ProximoTest {
       @Override
       public boolean write(byte[] data) throws IOException {
          return true;
+      }
+   }
+
+   private static class AutoboxingInt implements Autoboxing {
+
+      @Override
+      public int getInt()
+      {
+         return 0;
+      }
+
+      @Override
+      public Integer getInteger()
+      {
+         return null;
       }
    }
 }

@@ -13,9 +13,17 @@ import java.util.Map;
 public class Primitives {
 
 
+   private static final Map<Class<?>, Class<?>> WRAPPER_TYPES = new HashMap<Class<?>, Class<?>>();
    private static final Map<Class<?>, Class<?>> PRIMITIVE_TYPES = new HashMap<Class<?>, Class<?>>();
    private static final Map<Class<?>, Object> PRIMITIVE_OR_WRAPPER_DEFAULT_VALUES = new HashMap<Class<?>, Object>();
 
+
+   public static <T> Class<T> wrapperTypeFor(Class<T> clazz) {
+      if (!clazz.isPrimitive()) {
+         return clazz;
+      }
+      return (Class<T>) WRAPPER_TYPES.get(clazz);
+   }
 
    /**
     * Returns the primitive type of the given class.
@@ -56,6 +64,17 @@ public class Primitives {
       return (T) PRIMITIVE_OR_WRAPPER_DEFAULT_VALUES.get(primitiveOrWrapperType);
    }
 
+
+   static {
+      WRAPPER_TYPES.put(Boolean.TYPE, Boolean.class);
+      WRAPPER_TYPES.put(Character.TYPE, Character.class);
+      WRAPPER_TYPES.put(Byte.TYPE, Byte.class);
+      WRAPPER_TYPES.put(Short.TYPE, Short.class);
+      WRAPPER_TYPES.put(Integer.TYPE, Integer.class);
+      WRAPPER_TYPES.put(Long.TYPE, Long.class);
+      WRAPPER_TYPES.put(Float.TYPE, Float.class);
+      WRAPPER_TYPES.put(Double.TYPE, Double.class);
+   }
 
    static {
       PRIMITIVE_TYPES.put(Boolean.class, Boolean.TYPE);

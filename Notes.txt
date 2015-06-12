@@ -1,7 +1,31 @@
+Mockito does validate doReturn() to make sure they were all called with a
+  value that is compatible with the return type of the method.
+
+
+Mockito does validate doThrow() to make sure the exception being thrown is
+  compatible with the method signature. Aka checked exceptions must be
+  assignable to one of the method's checked exceptions.
+
+
+Mockito does not appear to do any validation on custom Answers when used
+  via the doAnswer() model regardless of any generic definitions.
+
+
+
+There is nothing in Mockito (Generic wise) to prevent someone from making
+  a call like doReturn(100).doReturn("").when(mock). However, when they
+  call the mock's method it does validate those objects and throw an error
+
+
+
+
+
 The call to invoke inside InvocationHandler will always give us a null
-  argument array if the method that was invoked has no arguments.
+  argument array if the method that was invoked has no parameters.
+
 
 Vararg methods will always report the vararg as a single argument. It
   will always be the last argument. Its parameter type will always be
-  an array who's getComponentType will report the actual type.
+  an array who's getComponentType will report the actual type. If no
+  varargs are given it will be an empty array
 

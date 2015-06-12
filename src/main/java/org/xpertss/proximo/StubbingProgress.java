@@ -14,7 +14,7 @@ import java.util.Queue;
 
 public class StubbingProgress {
 
-   private static final ThreadLocal<OngoingStubbing<?>> progress = new ThreadLocal<>();
+   private static final ThreadLocal<OngoingStubbing> progress = new ThreadLocal<>();
 
 
    public void stubbingStarted(Queue<Answer<?>> answers)
@@ -43,7 +43,7 @@ public class StubbingProgress {
     */
    public void reportMatcher(Matcher<?> matcher)
    {
-      OngoingStubbing<?> stubbing = progress.get();
+      OngoingStubbing stubbing = progress.get();
       if(stubbing != null) stubbing.reportMatcher(matcher);
    }
 

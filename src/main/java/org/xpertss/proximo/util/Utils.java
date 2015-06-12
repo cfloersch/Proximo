@@ -88,4 +88,18 @@ public class Utils {
       return interfaceType.cast(proxy);
    }
 
+
+   public static boolean isChecked(Throwable t)
+   {
+      return (t != null) && isChecked(t.getClass());
+   }
+
+   public static boolean isChecked(Class<?> exceptionType)
+   {
+      return (exceptionType != null) &&
+               Throwable.class.isAssignableFrom(exceptionType) &&
+                  !(Error.class.isAssignableFrom(exceptionType) ||
+                     RuntimeException.class.isAssignableFrom(exceptionType));
+   }
+
 }

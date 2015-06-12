@@ -32,18 +32,7 @@ public class ReturnsAnswer implements Answer<Object>, Serializable {
 
    public Class<?> getReturnType()
    {
-      return value.getClass();
-   }
-
-   public boolean returnsNull()
-   {
-      return value == null;
-   }
-
-   @Override
-   public String toString()
-   {
-      return "ReturnsAnswer(" + value + ")";
+      return (value == null) ? null : value.getClass();
    }
 
 

@@ -32,9 +32,9 @@ public class ThrowsAnswer implements Answer<Object>, Serializable {
       throw throwable.fillInStackTrace();
    }
 
-   public Throwable getThrowable()
+   public Class<?> getExceptionType()
    {
-      return throwable;
+      return throwable.getClass();
    }
 
 }
