@@ -431,6 +431,22 @@ public class ProximoTest {
    }
 
 
+   @Test(expected = IllegalArgumentException.class)
+   public void testReturnIntegerOnVoidMethod()
+   {
+      HttpRequest request = new TestHttpRequest();
+      HttpRequest proxy = Proximo.proxy(HttpRequest.class, request);
+      doReturn(200).when(proxy).logout();
+   }
+
+   @Test(expected = IllegalArgumentException.class)
+   public void testReturnNullOnVoidMethod()
+   {
+      HttpRequest request = new TestHttpRequest();
+      HttpRequest proxy = Proximo.proxy(HttpRequest.class, request);
+      doReturn(null).when(proxy).logout();
+   }
+
 
 
    @Test

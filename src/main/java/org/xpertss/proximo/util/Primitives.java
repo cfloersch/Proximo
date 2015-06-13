@@ -74,6 +74,7 @@ public class Primitives {
       WRAPPER_TYPES.put(Long.TYPE, Long.class);
       WRAPPER_TYPES.put(Float.TYPE, Float.class);
       WRAPPER_TYPES.put(Double.TYPE, Double.class);
+      WRAPPER_TYPES.put(Void.TYPE, void.class);
    }
 
    static {
@@ -85,6 +86,7 @@ public class Primitives {
       PRIMITIVE_TYPES.put(Long.class, Long.TYPE);
       PRIMITIVE_TYPES.put(Float.class, Float.TYPE);
       PRIMITIVE_TYPES.put(Double.class, Double.TYPE);
+      PRIMITIVE_TYPES.put(void.class, Void.TYPE);
    }
 
    static {
