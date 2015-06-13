@@ -6,13 +6,10 @@
  */
 package org.xpertss.proximo.answers;
 
-import org.xpertss.proximo.util.Utils;
 import xpertss.proximo.Answer;
 import xpertss.proximo.Invocation;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  *
@@ -24,7 +21,7 @@ public class ThrowsAnswer implements Answer<Object>, Serializable {
 
    public ThrowsAnswer(Throwable toBeThrown)
    {
-      this.throwable = Utils.notNull(toBeThrown, "toBeThrown");
+      this.throwable = toBeThrown;
    }
 
    public Object answer(Invocation invocation) throws Throwable

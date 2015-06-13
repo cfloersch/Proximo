@@ -51,6 +51,7 @@ public class ProxyStubber implements Stubber {
    @Override
    public Stubber doThrow(Throwable toBeThrown)
    {
+      if(toBeThrown == null) throw new NullPointerException("toBeThrown");
       answers.offer(new ThrowsAnswer(toBeThrown));
       return this;
    }

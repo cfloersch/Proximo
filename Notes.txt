@@ -29,3 +29,17 @@ Vararg methods will always report the vararg as a single argument. It
   an array who's getComponentType will report the actual type. If no
   varargs are given it will be an empty array
 
+
+So I tried various generic approaches to Answer chaining in an attempt to
+  keep the types the same so the following couldn't happen:
+
+  // This I could prevent
+  doReturn(100).doReturn("")
+
+  // This I could not prevent
+  doThrow(new RuntimeException()).doReturn(100).doReturn("")
+
+  This particular use case was successful, however, it proved to be
+  impossible to do across any given chain. As such I abandoned it. Its
+  probably why it wasn't done in mockito. It got really hairy when I
+  tried to deal with subclasses.

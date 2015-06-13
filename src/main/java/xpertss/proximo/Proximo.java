@@ -62,7 +62,7 @@ public class Proximo extends Matchers {
    {
       try {
          ProximoHandler handler = (ProximoHandler) Proxy.getInvocationHandler(instance);
-         return true;
+         return (handler != null);
       } catch(Exception e) {
          return false;
       }
@@ -170,6 +170,7 @@ public class Proximo extends Matchers {
     */
    public static Stubber doThrow(Throwable toBeThrown)
    {
+      if(toBeThrown == null) throw new NullPointerException("toBeThrown");
       return new ProxyStubber(PROGRESS, new ThrowsAnswer(toBeThrown));
    }
 
@@ -230,6 +231,7 @@ public class Proximo extends Matchers {
     *
     * @param answer to answer when the stubbed method is called
     * @return stubber - to select a method for stubbing
+    * @throws NullPointerException if the supplied answer is {@code null}
     */
    public static Stubber doAnswer(Answer answer)
    {
