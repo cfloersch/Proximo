@@ -1,6 +1,6 @@
 /**
  * Copyright 2015 XpertSoftware
- * <p/>
+ * <p>
  * Created By: cfloersch
  * Date: 6/3/2015
  */
@@ -130,9 +130,9 @@ public interface Stubber {
 
    /**
     * Use it for stubbing consecutive calls.
-    * <p/>
+    * <p>
     * Forward call to proxied instance.
-    * <p/>
+    * <p>
     * See javadoc for {@link Proximo#doForwardCall()}
     *
     * @return stubber - to select a method for stubbing

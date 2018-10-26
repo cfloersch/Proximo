@@ -1,6 +1,6 @@
 /**
  * Copyright 2015 XpertSoftware
- * <p/>
+ * <p>
  * Created By: cfloersch
  * Date: 6/3/2015
  */
@@ -24,7 +24,7 @@ public class Proximo extends Matchers {
 
    /**
     * Creates a proxy of the specified type for the specified instance.
-    * <p/>
+    * <p>
     * By default calls to any proxy method will be forwarded to the underlying
     * proxied instance. This behaviour may be overridden on a method by method
     * basis.
@@ -77,7 +77,7 @@ public class Proximo extends Matchers {
     * prevent the call from being forwarded to the proxied instance. If the method
     * has a return type it will result in the default value for the given type being
     * returned.
-    * <p/>
+    * <p>
     * <ol>
     * <li>Stubbing consecutive calls on a void method:
     * <pre class="code"><code class="java">
@@ -121,7 +121,7 @@ public class Proximo extends Matchers {
    /**
     * Enables stubbing methods with return values. Use it when you want the proxy
     * to return a particular value when a particular method is called.
-    * <p/>
+    * <p>
     * Examples:
     *
     * <pre class="code"><code class="java">
@@ -157,7 +157,7 @@ public class Proximo extends Matchers {
 
    /**
     * Use <code>doThrow()</code> when you want to stub a method with an exception.
-    * <p/>
+    * <p>
     * Example:
     *
     * <pre class="code"><code class="java">
@@ -182,9 +182,9 @@ public class Proximo extends Matchers {
     * Use <code>doForwardCall()</code> when you want to call the corresponding
     * method on the proxied instance. <b>Beware that methods on proxies call
     * the corresponding method on the proxied instance by default!</b>
-    * <p/>
+    * <p>
     * However, doForwardCall() comes in handy when stubbing consecutive calls:
-    * <p/>
+    * <p>
     * <pre class="code"><code class="java">
     *   doForwardCall().
     *   doThrow(new RuntimeException())
@@ -196,7 +196,7 @@ public class Proximo extends Matchers {
     *   // throws RuntimeException the next time:
     *   proxy.someMethod();
     * </code></pre>
-    * <p/>
+    * <p>
     * See examples in javadoc for {@link Proximo} class
     *
     * @return stubber - to select a method for stubbing
@@ -214,7 +214,7 @@ public class Proximo extends Matchers {
    /**
     * Use <code>doAnswer()</code> when you want to stub a method with a custom
     * {@link Answer}.
-    * <p/>
+    * <p>
     * Example:
     *
     * <pre class="code"><code class="java">

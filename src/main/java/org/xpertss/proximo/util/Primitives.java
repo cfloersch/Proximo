@@ -1,6 +1,6 @@
 /**
  * Copyright 2015 XpertSoftware
- * <p/>
+ * <p>
  * Created By: cfloersch
  * Date: 6/7/2015
  */
@@ -27,7 +27,7 @@ public class Primitives {
 
    /**
     * Returns the primitive type of the given class.
-    * <p/>
+    * <p>
     * The passed class can be any class : <code>boolean.class</code>, <code>Integer.class</code>
     * in witch case this method will return <code>boolean.class</code>, even <code>SomeObject.class</code>
     * in which case <code>null</code> will be returned.

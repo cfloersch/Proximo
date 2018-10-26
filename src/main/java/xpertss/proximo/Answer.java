@@ -1,6 +1,6 @@
 /**
  * Copyright 2015 XpertSoftware
- * <p/>
+ * <p>
  * Created By: cfloersch
  * Date: 6/3/2015
  */
@@ -8,7 +8,7 @@ package xpertss.proximo;
 
 /**
  * Generic interface to be used for configuring a proxy's answer.
- * <p/>
+ * <p>
  * Answer specifies an action that is executed and a return value that is
  * returned when you interact with the proxy.
  * <p>
